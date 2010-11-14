@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/ahmed/Eric/Azan/MainWindow.ui'
+# Form implementation generated from reading ui file '/home/ahmed/Eric/azan/MainWindow.ui'
 #
-# Created: Mon Nov  1 09:48:29 2010
-#      by: PyQt4 UI code generator 4.7.3
+# Created: Sun Nov 14 10:24:19 2010
+#      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,120 +17,7 @@ class Ui_MainWindow(object):
         font.setFamily("KacstQurn")
         font.setPointSize(11)
         MainWindow.setFont(font)
-        MainWindow.setStyleSheet(".QWidget ,QDialog,QGroupBox {\n"
-"   background-color: beige;\n"
-"   font-family: KacstQurn ;\n"
-"}\n"
-"\n"
-"/* Nice Windows-XP-style password character. */\n"
-"QLineEdit[echoMode=\"2\"] {\n"
-"    lineedit-password-character: 9679;\n"
-"}\n"
-"\n"
-"/* We provide a min-width and min-height for push buttons\n"
-"   so that they look elegant regardless of the width of the text. */\n"
-"QPushButton {\n"
-"    background-color: palegoldenrod;\n"
-"    border-width: 2px;\n"
-"    border-color: darkkhaki;\n"
-"    border-style: solid;\n"
-"    border-radius: 5;\n"
-"    padding: 3px;\n"
-"    min-width: 9ex;\n"
-"    min-height: 2.5ex;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"   background-color: khaki;\n"
-"}\n"
-"\n"
-"/* Increase the padding, so the text is shifted when the button is\n"
-"   pressed. */\n"
-"QPushButton:pressed {\n"
-"    padding-left: 5px;\n"
-"    padding-top: 5px;\n"
-"    background-color: #d0d67c;\n"
-"}\n"
-"\n"
-"QLabel, QAbstractButton {\n"
-"    font: bold;\n"
-"}\n"
-"\n"
-"/* Mark mandatory fields with a brownish color. */\n"
-".mandatory {\n"
-"    color: brown;\n"
-"}\n"
-"\n"
-"/* Bold text on status bar looks awful. */\n"
-"QStatusBar QLabel {\n"
-"   font: normal;\n"
-"}\n"
-"\n"
-"QStatusBar::item {\n"
-"    border-width: 1;\n"
-"    border-color: darkkhaki;\n"
-"    border-style: solid;\n"
-"    border-radius: 2;\n"
-"}\n"
-"\n"
-"QComboBox, QLineEdit, QSpinBox, QTextEdit, QListView,QProgressBar {\n"
-"    background-color: cornsilk;\n"
-"    selection-color: #0a214c; \n"
-"    selection-background-color: #C19A6B;\n"
-"}\n"
-"\n"
-"QListView {\n"
-"    show-decoration-selected: 1;\n"
-"}\n"
-"\n"
-"QListView::item:hover {\n"
-"    background-color: wheat;\n"
-"}\n"
-"\n"
-"/* We reserve 1 pixel space in padding. When we get the focus,\n"
-"   we kill the padding and enlarge the border. This makes the items\n"
-"   glow. */\n"
-"QLineEdit, QFrame {\n"
-"    border-width: 2px;\n"
-"    padding: 1px;\n"
-"    border-style: solid;\n"
-"    border-color: darkkhaki;\n"
-"    border-radius: 5px;\n"
-"}\n"
-"\n"
-"/* As mentioned above, eliminate the padding and increase the border. */\n"
-"QLineEdit:focus, QFrame:focus {\n"
-"    border-width: 3px;\n"
-"    padding: 0px;\n"
-"}\n"
-"\n"
-"/* A QLabel is a QFrame ... */\n"
-"QLabel {\n"
-"    border: none;\n"
-"    padding: 0;\n"
-"    background: none;\n"
-"}\n"
-"\n"
-"/* A QToolTip is a QLabel ... */\n"
-"QToolTip {\n"
-"    border: 2px solid darkkhaki;\n"
-"    padding: 5px;\n"
-"    border-radius: 3px;\n"
-"    opacity: 200;\n"
-"}\n"
-"\n"
-"/* Nice to have the background color change when hovered. */\n"
-"QRadioButton:hover, QCheckBox:hover {\n"
-"    background-color: wheat;\n"
-"}\n"
-"\n"
-"/* Force the dialog\'s buttons to follow the Windows guidelines. */\n"
-"QDialogButtonBox {\n"
-"    button-layout: 0;\n"
-"}\n"
-"\n"
-" \n"
-"")
+        MainWindow.setStyleSheet("None")
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
@@ -224,45 +111,30 @@ class Ui_MainWindow(object):
         self.txtIshaa.setObjectName("txtIshaa")
         self.gridLayout.addWidget(self.txtIshaa, 3, 2, 1, 1)
         self.verticalLayout.addWidget(self.frame)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem2)
-        self.label_8 = QtGui.QLabel(self.centralwidget)
-        self.label_8.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.label_8.setObjectName("label_8")
-        self.horizontalLayout_3.addWidget(self.label_8)
-        self.label_7 = QtGui.QLabel(self.centralwidget)
-        self.label_7.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.label_7.setObjectName("label_7")
-        self.horizontalLayout_3.addWidget(self.label_7)
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
-        self.progressBar = QtGui.QProgressBar(self.centralwidget)
-        self.progressBar.setProperty("value", 24)
-        self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
-        self.progressBar.setObjectName("progressBar")
-        self.verticalLayout.addWidget(self.progressBar)
-        spacerItem3 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem3)
+        spacerItem2 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem2)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.btnHide = QtGui.QPushButton(self.centralwidget)
         self.btnHide.setObjectName("btnHide")
         self.horizontalLayout_2.addWidget(self.btnHide)
-        self.btnAzkar = QtGui.QPushButton(self.centralwidget)
-        self.btnAzkar.setObjectName("btnAzkar")
-        self.horizontalLayout_2.addWidget(self.btnAzkar)
         self.btnSettings = QtGui.QPushButton(self.centralwidget)
         self.btnSettings.setObjectName("btnSettings")
         self.horizontalLayout_2.addWidget(self.btnSettings)
-        spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem4)
+        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem3)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 417, 27))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 417, 30))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
+        self.actionShow = QtGui.QAction(MainWindow)
+        self.actionShow.setObjectName("actionShow")
+        self.actionClose = QtGui.QAction(MainWindow)
+        self.actionClose.setObjectName("actionClose")
+        self.actionStopAzan = QtGui.QAction(MainWindow)
+        self.actionStopAzan.setObjectName("actionStopAzan")
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -279,11 +151,11 @@ class Ui_MainWindow(object):
         self.lblAsr.setText(QtGui.QApplication.translate("MainWindow", "العصر", None, QtGui.QApplication.UnicodeUTF8))
         self.lblMaghrib.setText(QtGui.QApplication.translate("MainWindow", "المغرب", None, QtGui.QApplication.UnicodeUTF8))
         self.lblIsha.setText(QtGui.QApplication.translate("MainWindow", "العشاء", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_8.setText(QtGui.QApplication.translate("MainWindow", "الصلاة القادمة", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_7.setText(QtGui.QApplication.translate("MainWindow", "الوقت  المتبقي حتي  ", None, QtGui.QApplication.UnicodeUTF8))
         self.btnHide.setText(QtGui.QApplication.translate("MainWindow", "إخفاء", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnAzkar.setText(QtGui.QApplication.translate("MainWindow", "الأذكار", None, QtGui.QApplication.UnicodeUTF8))
         self.btnSettings.setText(QtGui.QApplication.translate("MainWindow", "الأعدادات", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionShow.setText(QtGui.QApplication.translate("MainWindow", "إظهار", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionClose.setText(QtGui.QApplication.translate("MainWindow", "إنهاء البرنامج", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionStopAzan.setText(QtGui.QApplication.translate("MainWindow", "إيقاف صوت الأذان", None, QtGui.QApplication.UnicodeUTF8))
 
 
 if __name__ == "__main__":
