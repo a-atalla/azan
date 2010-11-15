@@ -59,13 +59,12 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
         self.trayicon.setContextMenu(self.traymenu)
         self.trayicon.show()
     def playAzan(self):
-        user=os.getenv('USER')
-        if  not os.path.isfile ("/home/"+user+"/.config/Azan.conf"):
+        settings = QtCore.QSettings('Azan')
+        if  not os.path.isfile(settings.fileName()):
             azanSound = 'sounds/qatami.ogg'
         else:
             print 'play custom azan'
-            set = QtCore.QSettings('Azan')
-            azanSound= set.value('Azan').toString()
+            azanSound= settings.value('Azan').toString()
         snd = Phonon.MediaSource(azanSound)
         self.mediaObject.clearQueue()
         self.mediaObject.setCurrentSource(snd)
@@ -73,8 +72,8 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
     def stopAzan(self):
         self.mediaObject.stop()
     def showSettings(self):
-        settings.show()
-        settings.cityCoordinates()
+        settingsDialog.show()
+        settingsDialog.cityCoordinates()
 
     def connections(self):
         self.connect(self.btnSettings, QtCore.SIGNAL('clicked()'), self.showSettings)
@@ -83,8 +82,14 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
         self.connect(self.actionShow, QtCore.SIGNAL('triggered()'), self.show)
         self.connect(self.actionClose, QtCore.SIGNAL('triggered()'), self.close)
         self.connect(self.actionStopAzan, QtCore.SIGNAL('triggered()'), self.stopAzan)
+        
+    def closeEvent(event,self):
+        settingsDialog.db.close()
+        del  settingsDialog.db #avoiding db reomveDatabase warning
+	if settingsDialog.isVisible():
+	  settingsDialog.close()
 
-class Settings(QtGui.QDialog, Ui_SettingsDialog):
+class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
@@ -108,7 +113,7 @@ class Settings(QtGui.QDialog, Ui_SettingsDialog):
         while self.query.next():
             country = self.query.value(0).toString()   
             self.listCountries.addItem(country)
-     
+
     def  getcity(self):
         self.listCities.clear()
         CurrentCountry=str((self.listCountries.currentItem()).text())
@@ -136,7 +141,8 @@ class Settings(QtGui.QDialog, Ui_SettingsDialog):
      
     def settings(self):
         user=os.getenv('USER')
-        if  not os.path.isfile ("/home/"+user+"/.config/Azan.conf"):
+        settings = QtCore.QSettings('Azan')
+        if  not os.path.isfile(settings.fileName()):
             #Default settings when the config file doesnot exist
             self.country ='Saudi Arabia'
             self.city = 'Makkah'
@@ -146,18 +152,18 @@ class Settings(QtGui.QDialog, Ui_SettingsDialog):
             self.maz='Default'
             self.seas='Winter'
             self.cal='UmmAlQuraUniv'
+            self.azan='sounds/makka.ogg'
         else:
-            set = QtCore.QSettings('Azan')
             #Get the setting from the config file
-            self.country =set.value('country').toString()
-            self.city = set.value('city').toString()
-            self.latitude=float (set.value('latitude').toString())
-            self.longitude=float (set.value('longitude').toString())
-            self.timeZone=int(set.value('timezone').toString())
-            self.cal=set.value('calendar').toString()
-            self.maz=set.value('mazhab').toString()
-            self.seas=set.value('season').toString()
-            self.azan=set.value('Azan').toString()
+            self.country =settings.value('country').toString()
+            self.city = settings.value('city').toString()
+            self.latitude=float (settings.value('latitude').toString())
+            self.longitude=float (settings.value('longitude').toString())
+            self.timeZone=int(settings.value('timezone').toString())
+            self.cal=settings.value('calendar').toString()
+            self.maz=settings.value('mazhab').toString()
+            self.seas=settings.value('season').toString()
+            self.azan=settings.value('Azan').toString()
         azan.lblCurrentCity.setText(self.city)
         azan.lblCurrentCountry.setText(self.country)
         if  self.cal == 'UmmAlQuraUniv':
@@ -200,42 +206,42 @@ class Settings(QtGui.QDialog, Ui_SettingsDialog):
             self.rbWinter.setChecked(1)
         
     def saveSettings(self):
-        set = QtCore.QSettings('Azan')
+        settings = QtCore.QSettings('Azan')
         # Save the city   and country
-        set.setValue('country', self.listCountries.currentItem().text())
-        set.setValue('city', self.listCities.currentItem().text())
-        set.setValue('longitude', self.txtLongitude.text())
-        set.setValue('latitude', self.txtLatitude.text())
-        set.setValue('timezone', self.txtTimeZone.text())
+        settings.setValue('country', self.listCountries.currentItem().text())
+        settings.setValue('city', self.listCities.currentItem().text())
+        settings.setValue('longitude', self.txtLongitude.text())
+        settings.setValue('latitude', self.txtLatitude.text())
+        settings.setValue('timezone', self.txtTimeZone.text())
         if  self.rbWinter.isChecked():
-            set.setValue('season', 'Winter')
+            settings.setValue('season', 'Winter')
         if self.rbSummer.isChecked():
-            set.setValue('season', 'Summer')
+            settings.setValue('season', 'Summer')
         # Save the Mazhab
         if self.cboxMazhab.currentIndex() == 0:
-            set.setValue('mazhab', 'Default')
+            settings.setValue('mazhab', 'Default')
         else:
-            set.setValue('mazhab','Hanafi')
+            settings.setValue('mazhab','Hanafi')
         # Save the calender
         if self.cboxCalendar.currentIndex() == 0:
-            set.setValue('calendar', 'UmmAlQuraUniv')
+            settings.setValue('calendar', 'UmmAlQuraUniv')
         if self.cboxCalendar.currentIndex() == 1:
-            set.setValue('calendar', 'EgyptianGeneralAuthorityOfSurvey')
+            settings.setValue('calendar', 'EgyptianGeneralAuthorityOfSurvey')
         if self.cboxCalendar.currentIndex() == 2:
-            set.setValue('calendar', 'UnivOfIslamicSciencesKarachi')
+            settings.setValue('calendar', 'UnivOfIslamicSciencesKarachi')
         if self.cboxCalendar.currentIndex() == 3:
-            set.setValue('calendar', 'IslamicSocietyOfNorthAmerica')
+            settings.setValue('calendar', 'IslamicSocietyOfNorthAmerica')
         if self.cboxCalendar.currentIndex() == 4:
-            set.setValue('calendar', 'MuslimWorldLeague')
+            settings.setValue('calendar', 'MuslimWorldLeague')
         #Save the Azan sound
         if self.cboxAzanSound.currentIndex()==0:
-            set.setValue('Azan', 'sounds/qatami.ogg')
+            settings.setValue('Azan', 'sounds/qatami.ogg')
         if self.cboxAzanSound.currentIndex()==1:
-            set.setValue('Azan', 'sounds/makka.ogg')
+            settings.setValue('Azan', 'sounds/makka.ogg')
         if self.cboxAzanSound.currentIndex()==2:
-            set.setValue('Azan', 'sounds/madina.ogg')
+            settings.setValue('Azan', 'sounds/madina.ogg')
         if self.cboxAzanSound.currentIndex()==3:
-            set.setValue('Azan', 'sounds/egypt.ogg')
+            settings.setValue('Azan', 'sounds/egypt.ogg')
 
        
         self.calculate()
@@ -271,11 +277,12 @@ class Settings(QtGui.QDialog, Ui_SettingsDialog):
         self.connect(self.btnStop, QtCore.SIGNAL('clicked()'), azan.stopAzan)
 
 def main():
-    global azan, settings
+    global azan, settingsDialog
     app=QtGui.QApplication(sys.argv)
+    QtCore.QCoreApplication.setApplicationName('Azan')
     azan=Azan()
-    settings=Settings()
-    settings.calculate()
+    settingsDialog=SettingsDialog()
+    settingsDialog.calculate()
     azan.show()
     sys.exit(app.exec_())
     
