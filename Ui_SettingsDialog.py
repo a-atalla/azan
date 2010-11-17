@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ahmed/Eric/azan/SettingsDialog.ui'
 #
-# Created: Sun Nov 14 10:24:20 2010
+# Created: Wed Nov 17 18:14:52 2010
 #      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -14,7 +14,120 @@ class Ui_SettingsDialog(object):
         SettingsDialog.setObjectName("SettingsDialog")
         SettingsDialog.resize(456, 497)
         SettingsDialog.setLayoutDirection(QtCore.Qt.LeftToRight)
-        SettingsDialog.setStyleSheet("None")
+        SettingsDialog.setStyleSheet(".QWidget ,QDialog,QGroupBox {\n"
+"   background-color: beige;\n"
+"   font-family: KacstQurn ;\n"
+"}\n"
+"\n"
+"/* Nice Windows-XP-style password character. */\n"
+"QLineEdit[echoMode=\"2\"] {\n"
+"    lineedit-password-character: 9679;\n"
+"}\n"
+"\n"
+"/* We provide a min-width and min-height for push buttons\n"
+"   so that they look elegant regardless of the width of the text. */\n"
+"QPushButton,QToolButton {\n"
+"    background-color: palegoldenrod;\n"
+"    border-width: 2px;\n"
+"    border-color: darkkhaki;\n"
+"    border-style: solid;\n"
+"    border-radius: 5;\n"
+"    padding: 3px;\n"
+"    min-width: 9ex;\n"
+"    min-height: 2.5ex;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"   background-color: khaki;\n"
+"}\n"
+"\n"
+"/* Increase the padding, so the text is shifted when the button is\n"
+"   pressed. */\n"
+"QPushButton:pressed {\n"
+"    padding-left: 5px;\n"
+"    padding-top: 5px;\n"
+"    background-color: #d0d67c;\n"
+"}\n"
+"\n"
+"QLabel, QAbstractButton {\n"
+"    font: bold;\n"
+"}\n"
+"\n"
+"/* Mark mandatory fields with a brownish color. */\n"
+".mandatory {\n"
+"    color: brown;\n"
+"}\n"
+"\n"
+"/* Bold text on status bar looks awful. */\n"
+"QStatusBar QLabel {\n"
+"   font: normal;\n"
+"}\n"
+"\n"
+"QStatusBar::item {\n"
+"    border-width: 1;\n"
+"    border-color: darkkhaki;\n"
+"    border-style: solid;\n"
+"    border-radius: 2;\n"
+"}\n"
+"\n"
+"QComboBox, QLineEdit, QSpinBox, QTextEdit, QListView,QProgressBar {\n"
+"    background-color: cornsilk;\n"
+"    selection-color: #0a214c; \n"
+"    selection-background-color: #C19A6B;\n"
+"}\n"
+"\n"
+"QListView {\n"
+"    show-decoration-selected: 1;\n"
+"}\n"
+"\n"
+"QListView::item:hover {\n"
+"    background-color: wheat;\n"
+"}\n"
+"\n"
+"/* We reserve 1 pixel space in padding. When we get the focus,\n"
+"   we kill the padding and enlarge the border. This makes the items\n"
+"   glow. */\n"
+"QLineEdit, QFrame {\n"
+"    border-width: 2px;\n"
+"    padding: 1px;\n"
+"    border-style: solid;\n"
+"    border-color: darkkhaki;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"/* As mentioned above, eliminate the padding and increase the border. */\n"
+"QLineEdit:focus, QFrame:focus {\n"
+"    border-width: 3px;\n"
+"    padding: 0px;\n"
+"}\n"
+"\n"
+"/* A QLabel is a QFrame ... */\n"
+"QLabel {\n"
+"    border: none;\n"
+"    padding: 0;\n"
+"    background: none;\n"
+"}\n"
+"\n"
+"/* A QToolTip is a QLabel ... */\n"
+"QToolTip {\n"
+"    border: 2px solid darkkhaki;\n"
+"    padding: 5px;\n"
+"    border-radius: 3px;\n"
+"    opacity: 200;\n"
+"}\n"
+"\n"
+"/* Nice to have the background color change when hovered. */\n"
+"QRadioButton:hover, QCheckBox:hover {\n"
+"    background-color: wheat;\n"
+"}\n"
+"\n"
+"/* Force the dialog\'s buttons to follow the Windows guidelines. */\n"
+"QDialogButtonBox {\n"
+"    button-layout: 0;\n"
+"}\n"
+"\n"
+" \n"
+"")
         SettingsDialog.setModal(False)
         self.verticalLayout_5 = QtGui.QVBoxLayout(SettingsDialog)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
@@ -24,7 +137,13 @@ class Ui_SettingsDialog(object):
         self.tabWidget.setEnabled(True)
         self.tabWidget.setFocusPolicy(QtCore.Qt.TabFocus)
         self.tabWidget.setLayoutDirection(QtCore.Qt.RightToLeft)
-        self.tabWidget.setIconSize(QtCore.QSize(48, 48))
+        self.tabWidget.setTabPosition(QtGui.QTabWidget.North)
+        self.tabWidget.setTabShape(QtGui.QTabWidget.Rounded)
+        self.tabWidget.setIconSize(QtCore.QSize(32, 32))
+        self.tabWidget.setElideMode(QtCore.Qt.ElideRight)
+        self.tabWidget.setDocumentMode(False)
+        self.tabWidget.setTabsClosable(False)
+        self.tabWidget.setMovable(False)
         self.tabWidget.setObjectName("tabWidget")
         self.tabWidgetPage1 = QtGui.QWidget()
         self.tabWidgetPage1.setLayoutDirection(QtCore.Qt.LeftToRight)
@@ -144,8 +263,8 @@ class Ui_SettingsDialog(object):
         self.tabWidgetPage2 = QtGui.QWidget()
         self.tabWidgetPage2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.tabWidgetPage2.setObjectName("tabWidgetPage2")
-        self.verticalLayout_6 = QtGui.QVBoxLayout(self.tabWidgetPage2)
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.verticalLayout_4 = QtGui.QVBoxLayout(self.tabWidgetPage2)
+        self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.horizontalLayout_13 = QtGui.QHBoxLayout()
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
         spacerItem7 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -153,11 +272,11 @@ class Ui_SettingsDialog(object):
         self.label_7 = QtGui.QLabel(self.tabWidgetPage2)
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_13.addWidget(self.label_7)
-        self.verticalLayout_6.addLayout(self.horizontalLayout_13)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_13)
         self.horizontalLayout_12 = QtGui.QHBoxLayout()
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
         self.btnStop = QtGui.QToolButton(self.tabWidgetPage2)
-        self.btnStop.setMinimumSize(QtCore.QSize(33, 33))
+        self.btnStop.setMinimumSize(QtCore.QSize(37, 18))
         self.btnStop.setText("")
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("icons/media-playback-pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -165,7 +284,7 @@ class Ui_SettingsDialog(object):
         self.btnStop.setObjectName("btnStop")
         self.horizontalLayout_12.addWidget(self.btnStop)
         self.btnPlay = QtGui.QToolButton(self.tabWidgetPage2)
-        self.btnPlay.setMinimumSize(QtCore.QSize(33, 33))
+        self.btnPlay.setMinimumSize(QtCore.QSize(37, 18))
         self.btnPlay.setText("")
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap("icons/media-playback-start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -180,9 +299,28 @@ class Ui_SettingsDialog(object):
         self.cboxAzanSound.addItem("")
         self.cboxAzanSound.addItem("")
         self.horizontalLayout_12.addWidget(self.cboxAzanSound)
-        self.verticalLayout_6.addLayout(self.horizontalLayout_12)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_12)
+        self.line = QtGui.QFrame(self.tabWidgetPage2)
+        self.line.setFrameShape(QtGui.QFrame.HLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout_4.addWidget(self.line)
+        self.horizontalLayout_14 = QtGui.QHBoxLayout()
+        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
+        self.label_8 = QtGui.QLabel(self.tabWidgetPage2)
+        self.label_8.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.label_8.setObjectName("label_8")
+        self.horizontalLayout_14.addWidget(self.label_8)
+        self.spinShowZekrTimer = QtGui.QSpinBox(self.tabWidgetPage2)
+        self.spinShowZekrTimer.setObjectName("spinShowZekrTimer")
+        self.horizontalLayout_14.addWidget(self.spinShowZekrTimer)
+        self.label_6 = QtGui.QLabel(self.tabWidgetPage2)
+        self.label_6.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.label_6.setObjectName("label_6")
+        self.horizontalLayout_14.addWidget(self.label_6)
+        self.verticalLayout_4.addLayout(self.horizontalLayout_14)
         spacerItem8 = QtGui.QSpacerItem(20, 344, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout_6.addItem(spacerItem8)
+        self.verticalLayout_4.addItem(spacerItem8)
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap("icons/preferences-desktop-sound.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.tabWidget.addTab(self.tabWidgetPage2, icon3, "")
@@ -229,6 +367,8 @@ class Ui_SettingsDialog(object):
         self.cboxAzanSound.setItemText(1, QtGui.QApplication.translate("SettingsDialog", "المسجد الحرام", None, QtGui.QApplication.UnicodeUTF8))
         self.cboxAzanSound.setItemText(2, QtGui.QApplication.translate("SettingsDialog", "المسجد النبوي", None, QtGui.QApplication.UnicodeUTF8))
         self.cboxAzanSound.setItemText(3, QtGui.QApplication.translate("SettingsDialog", "مصر - عبدالباسط عبد الصمد", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_8.setText(QtGui.QApplication.translate("SettingsDialog", "دقيقة", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_6.setText(QtGui.QApplication.translate("SettingsDialog", "إظهار الأذكار كل ", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabWidgetPage2), QtGui.QApplication.translate("SettingsDialog", "إعدادات الأذان", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("SettingsDialog", "إغلاق", None, QtGui.QApplication.UnicodeUTF8))
         self.btnSaveSettings.setText(QtGui.QApplication.translate("SettingsDialog", "حفظ  ", None, QtGui.QApplication.UnicodeUTF8))

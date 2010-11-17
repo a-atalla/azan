@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project azan -->
-<!-- Saved: 2010-11-14, 10:26:10 -->
+<!-- Saved: 2010-11-17, 12:19:56 -->
 <!-- Copyright (C) 2010 ,  -->
 <Project version="4.6">
   <Language>en</Language>
@@ -17,10 +17,12 @@
     <Source>prayertime.py</Source>
     <Source>Azan.py</Source>
     <Source>Ui_SettingsDialog.py</Source>
+    <Source>Ui_PopupWindow.py</Source>
   </Sources>
   <Forms>
     <Form>MainWindow.ui</Form>
     <Form>SettingsDialog.ui</Form>
+    <Form>PopupWindow.ui</Form>
   </Forms>
   <Translations>
   </Translations>

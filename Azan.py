@@ -7,6 +7,7 @@ from PyQt4.phonon import Phonon
 from prayertime import *
 from Ui_MainWindow import  *
 from Ui_SettingsDialog import *
+from Ui_PopupWindow import *
 
 class Azan(QtGui.QMainWindow,Ui_MainWindow):
     def __init__(self):
@@ -48,7 +49,6 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
         size =  self.geometry()
         self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
 
-
     def TrayIcon(self):
         self.trayicon=QtGui.QSystemTrayIcon(QtGui.QIcon('icons/kaba.png'))
         self.trayicon.setToolTip('Azan Prayer Times')
@@ -63,7 +63,6 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
         if  not os.path.isfile(settings.fileName()):
             azanSound = 'sounds/qatami.ogg'
         else:
-            print 'play custom azan'
             azanSound= settings.value('Azan').toString()
         snd = Phonon.MediaSource(azanSound)
         self.mediaObject.clearQueue()
@@ -86,8 +85,10 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
     def closeEvent(event,self):
         settingsDialog.db.close()
         del  settingsDialog.db #avoiding db reomveDatabase warning
-	if settingsDialog.isVisible():
-	  settingsDialog.close()
+        if settingsDialog.isVisible():
+            settingsDialog.close()
+        if  azkar.isVisible():
+            azkar.close()
 
 class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
     def __init__(self):
@@ -153,6 +154,7 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
             self.seas='Winter'
             self.cal='UmmAlQuraUniv'
             self.azan='sounds/makka.ogg'
+            self.azkartime='1'
         else:
             #Get the setting from the config file
             self.country =settings.value('country').toString()
@@ -204,6 +206,8 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         if self.seas == 'Winter':
             self.season = 'Winter'
             self.rbWinter.setChecked(1)
+        self.azkartime=settings.value('AzkarTime').toString()
+        
         
     def saveSettings(self):
         settings = QtCore.QSettings('Azan')
@@ -241,9 +245,12 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         if self.cboxAzanSound.currentIndex()==2:
             settings.setValue('Azan', 'sounds/madina.ogg')
         if self.cboxAzanSound.currentIndex()==3:
-            settings.setValue('Azan', 'sounds/egypt.ogg')
-
-       
+            settings.setValue('Azan', 'sounds/egypt.ogg')       
+        # Save the Azkar timing
+        if int(self.spinShowZekrTimer.text() ) >0:
+            settings.setValue('AzkarTime', self.spinShowZekrTimer.text())
+        else:
+            settings.setValue('AzkarTime', '1')
         self.calculate()
         
     def  calculate(self):
@@ -261,6 +268,7 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
                 self.listCities.setCurrentRow(i)         
         pt=Prayertime(self.longitude, self.latitude,self.timeZone, year, month, day ,self.calendar, self.mazhab, self.season)
         pt.calculate()
+        print 'Qibla Direction is ', pt.get_qibla();
         azan.txtFajr.setText(pt.fajr_time())
         azan.txtShrouk.setText(pt.shrouk_time())
         azan.txtZuhr.setText(pt.zuhr_time())
@@ -276,14 +284,51 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         self.connect(self.btnPlay, QtCore.SIGNAL('clicked()'), azan.playAzan)
         self.connect(self.btnStop, QtCore.SIGNAL('clicked()'), azan.stopAzan)
 
+class PopupWindow(QtGui.QWidget, Ui_Form):
+    def __init__(self):
+        QtGui.QWidget.__init__(self)
+        self.setupUi(self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.location()
+        self.hideZekr()
+        self.showZekr()
+        self.connections()
+       
+    def location(self):
+        screen = QtGui.QDesktopWidget().screenGeometry()
+        size =  self.geometry()
+        self.move((screen.width()-size.width()), (screen.height()-size.height()))
+        
+    def showEvent(self, event):
+        self.hideZekr()
+        
+        
+    def showZekr(self):
+        time =(int(settingsDialog.azkartime) * 60000)+30000
+        self.timerShowZekr = QtCore.QTimer(self)
+        self.timerShowZekr.start(time)
+    
+    def hideZekr(self):
+        self.timerHideZekr=QtCore.QTimer(self)
+        self.timerHideZekr.start(30000)
+        
+    def connections(self):
+        self.connect(self.btnClosePopup, QtCore.SIGNAL('clicked()'), self.close)
+        self.connect(self.timerShowZekr,QtCore.SIGNAL("timeout()"), self.show)
+        self.connect(self.timerHideZekr,QtCore.SIGNAL("timeout()"), self.close)
+
 def main():
-    global azan, settingsDialog
+    global azan, settingsDialog, azkar
     app=QtGui.QApplication(sys.argv)
     QtCore.QCoreApplication.setApplicationName('Azan')
     azan=Azan()
+    azan.show()
+    
     settingsDialog=SettingsDialog()
     settingsDialog.calculate()
-    azan.show()
+
+    azkar=PopupWindow()
+
     sys.exit(app.exec_())
     
 if __name__ == "__main__":
