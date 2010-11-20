@@ -60,6 +60,7 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
         self.traymenu.addAction(self.actionClose)
         self.trayicon.setContextMenu(self.traymenu)
         self.trayicon.show()
+        
     def playAzan(self):
         settings = QtCore.QSettings('Azan')
         if  not os.path.isfile(settings.fileName()):
@@ -70,8 +71,10 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
         self.mediaObject.clearQueue()
         self.mediaObject.setCurrentSource(snd)
         self.mediaObject.play()
+        
     def stopAzan(self):
         self.mediaObject.stop()
+        
     def showSettings(self):
         settingsDialog.show()
         settingsDialog.cityCoordinates()
@@ -127,6 +130,7 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         while self.query.next():
             city= self.query.value(0).toString()   
             self.listCities.addItem(city)
+            
     def  cityCoordinates(self):
         self.city = str(self.listCities.currentItem().text())
         self.query.exec_('SELECT longitude  FROM citiesTable WHERE cityName =' +"'"+self.city+"'")
@@ -157,6 +161,8 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
             self.cal='UmmAlQuraUniv'
             self.azan='sounds/makka.ogg'
             self.azkartime='1'
+            self.hideazkartime='20'
+            self.azkarlocation='BottomRight'
         else:
             #Get the setting from the config file
             self.country =settings.value('country').toString()
@@ -168,6 +174,17 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
             self.maz=settings.value('mazhab').toString()
             self.seas=settings.value('season').toString()
             self.azan=settings.value('Azan').toString()
+            
+            self.azkartime=settings.value('AzkarTime').toString()
+            self.spinShowZekrTimer.setValue(int(self.azkartime))
+            
+            self.hideazkartime=settings.value('hideAzkarTime').toString()
+            self.spinHideZekrTimer.setValue(int(self.hideazkartime))
+            
+            self.azkarlocation=settings.value('AzkarLocation').toString()
+            
+        self.spinShowZekrTimer.setValue(int(self.azkartime))
+        self.spinHideZekrTimer.setValue(int(self.hideazkartime))
         azan.lblCurrentCity.setText(self.city)
         azan.lblCurrentCountry.setText(self.country)
         if  self.cal == 'UmmAlQuraUniv':
@@ -208,8 +225,16 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         if self.seas == 'Winter':
             self.season = 'Winter'
             self.rbWinter.setChecked(1)
-        self.azkartime=settings.value('AzkarTime').toString()
-        self.spinShowZekrTimer.setValue(int(self.azkartime))
+        ########################
+        if self.azkarlocation=='TopLeft':
+            self.rbTopLeft.setChecked(1)
+        if self.azkarlocation=='TopRight':
+            self.rbTopRight.setChecked(1)
+        if self.azkarlocation=='BottomLeft':
+            self.rbBottomLeft.setChecked(1)
+        if self.azkarlocation=='BottomRight':
+            self.rbBottomRight.setChecked(1)
+        
         
         
     def saveSettings(self):
@@ -254,7 +279,24 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
             settings.setValue('AzkarTime', self.spinShowZekrTimer.text())
         else:
             settings.setValue('AzkarTime', '1')
+        
+        if int(self.spinHideZekrTimer.text() ) >0:
+            settings.setValue('hideAzkarTime', self.spinHideZekrTimer.text())
+        else:
+            settings.setValue('hideAzkarTime', '1')
+        #Save Azkar position
+        if self.rbTopLeft.isChecked():
+            settings.setValue('AzkarLocation', 'TopLeft')
+        if self.rbTopRight.isChecked():
+             settings.setValue('AzkarLocation', 'TopRight')
+        if self.rbBottomLeft.isChecked():
+            settings.setValue('AzkarLocation', 'BottomLeft')
+        if self.rbBottomRight.isChecked():
+             settings.setValue('AzkarLocation', 'BottomRight')
+            
+            
         self.calculate()
+        
         
     def  calculate(self):
         year= int(QtCore.QDateTime.currentDateTime().toString("yyyy"))
@@ -283,6 +325,8 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         self.connect(self.listCountries,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.getcity)
         self.connect(self.listCities,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.cityCoordinates)
         self.connect(self.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.saveSettings)
+       
+        
         self.connect(self.listCountries, QtCore.SIGNAL("currentItemChanged(QListWidgetItem*,QListWidgetItem*)"), self.getcity)
         self.connect(self.btnPlay, QtCore.SIGNAL('clicked()'), azan.playAzan)
         self.connect(self.btnStop, QtCore.SIGNAL('clicked()'), azan.stopAzan)
@@ -293,22 +337,48 @@ class PopupWindow(QtGui.QWidget, Ui_Form):
         self.setupUi(self)
         self.setWindowFlags(QtCore.Qt.Tool)  
         self.location()
-        self.hideZekr()
-        time =(int(settingsDialog.azkartime) * 6000)
-        self.timerShowZekr = QtCore.QTimer(self)
-        self.timerShowZekr.start(time)
-    
+        self.startTiming()
         self.connections()
        
     def location(self):
         screen = QtGui.QDesktopWidget().screenGeometry()
         size =  self.geometry()
-        self.move((screen.width()-size.width()), (screen.height()-size.height()))
+        if settingsDialog.azkarlocation == 'TopLeft':
+            self.move(0, 0)
+        if settingsDialog.azkarlocation == 'TopRight':
+            self.move((screen.width()-size.width()), 0)
+        if settingsDialog.azkarlocation == 'BottomLeft':
+            self.move(0,(screen.height()-size.height()))
+        if settingsDialog.azkarlocation == 'BottomRight':
+            self.move((screen.width()-size.width()), (screen.height()-size.height()))
         
     def showEvent(self, event):
-        self.hideZekr()
+        hideTime =(int(settingsDialog.hideazkartime) * 1000)
+        self.timerHideZekr.start(hideTime)
+        
+    def startTiming(self):
+        print 'Timing is started'
+        global  timerHideZekr , timerShowZekr
+        self.timerHideZekr=QtCore.QTimer(self)
+        hideTime =(int(settingsDialog.hideazkartime) * 1000)
+        self.timerHideZekr.start(hideTime)
+        
+        showTime =(int(settingsDialog.azkartime) * 1000)+hideTime
+        self.timerShowZekr = QtCore.QTimer(self)
+        self.timerShowZekr.stop()
+        self.timerShowZekr.start(showTime)
+    
+    def resetTiming(self):
+        self.timerShowZekr.stop()
+        self.timerHideZekr.stop()
+        hideTime =(int(settingsDialog.hideazkartime) * 1000)
+        self.timerHideZekr.start(hideTime)
+        
+        showTime =(int(settingsDialog.azkartime) * 1000)+hideTime
+        self.timerShowZekr.start(showTime)
         
         
+   
     def showZekr(self):
         i=random.randint(0, 24)
         azkarList=[]
@@ -319,16 +389,13 @@ class PopupWindow(QtGui.QWidget, Ui_Form):
             azkarList.append(zekr)
         self.txtPopup.setText(azkarList[i])
         self.show()
-            
-            
-    def hideZekr(self):
-        self.timerHideZekr=QtCore.QTimer(self)
-        self.timerHideZekr.start(2000)
         
     def connections(self):
         self.connect(self.btnClosePopup, QtCore.SIGNAL('clicked()'), self.hide)
         self.connect(self.timerShowZekr,QtCore.SIGNAL("timeout()"), self.showZekr)
         self.connect(self.timerHideZekr,QtCore.SIGNAL("timeout()"), self.hide)
+        self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.resetTiming)
+        self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.location)
 
 def main():
     global azan, settingsDialog, azkar
