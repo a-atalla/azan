@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ahmed/Eric/azan/PopupWindow.ui'
 #
-# Created: Wed Nov 17 18:14:53 2010
+# Created: Sat Nov 20 01:54:00 2010
 #      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,11 @@ from PyQt4 import QtCore, QtGui
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(270, 185)
+        Form.resize(324, 207)
+        font = QtGui.QFont()
+        font.setFamily("KacstQurn")
+        font.setPointSize(14)
+        Form.setFont(font)
         Form.setLayoutDirection(QtCore.Qt.RightToLeft)
         Form.setStyleSheet("QWidget ,QDialog,QGroupBox {\n"
 "   background-color: beige;\n"
@@ -134,19 +138,17 @@ class Ui_Form(object):
 "")
         self.verticalLayout = QtGui.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.popupLabel = QtGui.QLabel(Form)
-        font = QtGui.QFont()
-        font.setFamily("KacstQurn")
-        font.setWeight(75)
-        font.setItalic(False)
-        font.setBold(True)
-        self.popupLabel.setFont(font)
-        self.popupLabel.setObjectName("popupLabel")
-        self.verticalLayout.addWidget(self.popupLabel)
         self.txtPopup = QtGui.QTextEdit(Form)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.txtPopup.sizePolicy().hasHeightForWidth())
+        self.txtPopup.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("KacstQurn")
-        font.setPointSize(16)
+        font.setPointSize(12)
+        font.setWeight(75)
+        font.setBold(True)
         self.txtPopup.setFont(font)
         self.txtPopup.setObjectName("txtPopup")
         self.verticalLayout.addWidget(self.txtPopup)
@@ -166,7 +168,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QtGui.QApplication.translate("Form", "Form", None, QtGui.QApplication.UnicodeUTF8))
-        self.popupLabel.setText(QtGui.QApplication.translate("Form", "إنتبه", None, QtGui.QApplication.UnicodeUTF8))
         self.btnClosePopup.setText(QtGui.QApplication.translate("Form", "إغلاق", None, QtGui.QApplication.UnicodeUTF8))
 
 

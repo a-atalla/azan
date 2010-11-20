@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
+import random
 from PyQt4 import QtGui, QtCore, QtSql
 from PyQt4.phonon import Phonon
 from prayertime import *
@@ -23,6 +24,7 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
         self.TrayIcon()
         self.showTime()
         self.connections()  
+        
     def showTime(self):
         nowTime =QtCore.QDateTime.currentDateTime().toString("h:m:s A")
         nowDate =QtCore.QDateTime.currentDateTime().toString("ddd dd MMM yyyy")
@@ -61,7 +63,7 @@ class Azan(QtGui.QMainWindow,Ui_MainWindow):
     def playAzan(self):
         settings = QtCore.QSettings('Azan')
         if  not os.path.isfile(settings.fileName()):
-            azanSound = 'sounds/qatami.ogg'
+            azanSound = 'sounds/makka.ogg'
         else:
             azanSound= settings.value('Azan').toString()
         snd = Phonon.MediaSource(azanSound)
@@ -207,6 +209,7 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
             self.season = 'Winter'
             self.rbWinter.setChecked(1)
         self.azkartime=settings.value('AzkarTime').toString()
+        self.spinShowZekrTimer.setValue(int(self.azkartime))
         
         
     def saveSettings(self):
@@ -288,10 +291,13 @@ class PopupWindow(QtGui.QWidget, Ui_Form):
     def __init__(self):
         QtGui.QWidget.__init__(self)
         self.setupUi(self)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(QtCore.Qt.Tool)  
         self.location()
         self.hideZekr()
-        self.showZekr()
+        time =(int(settingsDialog.azkartime) * 6000)
+        self.timerShowZekr = QtCore.QTimer(self)
+        self.timerShowZekr.start(time)
+    
         self.connections()
        
     def location(self):
@@ -304,18 +310,25 @@ class PopupWindow(QtGui.QWidget, Ui_Form):
         
         
     def showZekr(self):
-        time =(int(settingsDialog.azkartime) * 60000)+30000
-        self.timerShowZekr = QtCore.QTimer(self)
-        self.timerShowZekr.start(time)
-    
+        i=random.randint(0, 24)
+        azkarList=[]
+        self.query=QtSql.QSqlQuery()
+        self.query.exec_('SELECT zekr FROM azkar')
+        while self.query.next():
+            zekr = self.query.value(0).toString()   
+            azkarList.append(zekr)
+        self.txtPopup.setText(azkarList[i])
+        self.show()
+            
+            
     def hideZekr(self):
         self.timerHideZekr=QtCore.QTimer(self)
-        self.timerHideZekr.start(30000)
+        self.timerHideZekr.start(2000)
         
     def connections(self):
-        self.connect(self.btnClosePopup, QtCore.SIGNAL('clicked()'), self.close)
-        self.connect(self.timerShowZekr,QtCore.SIGNAL("timeout()"), self.show)
-        self.connect(self.timerHideZekr,QtCore.SIGNAL("timeout()"), self.close)
+        self.connect(self.btnClosePopup, QtCore.SIGNAL('clicked()'), self.hide)
+        self.connect(self.timerShowZekr,QtCore.SIGNAL("timeout()"), self.showZekr)
+        self.connect(self.timerHideZekr,QtCore.SIGNAL("timeout()"), self.hide)
 
 def main():
     global azan, settingsDialog, azkar

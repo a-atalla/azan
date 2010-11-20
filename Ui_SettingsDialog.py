@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file '/home/ahmed/Eric/azan/SettingsDialog.ui'
 #
-# Created: Wed Nov 17 18:14:52 2010
+# Created: Sat Nov 20 01:53:59 2010
 #      by: PyQt4 UI code generator 4.7.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,6 +13,9 @@ class Ui_SettingsDialog(object):
     def setupUi(self, SettingsDialog):
         SettingsDialog.setObjectName("SettingsDialog")
         SettingsDialog.resize(456, 497)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("icons/configure.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        SettingsDialog.setWindowIcon(icon)
         SettingsDialog.setLayoutDirection(QtCore.Qt.LeftToRight)
         SettingsDialog.setStyleSheet(".QWidget ,QDialog,QGroupBox {\n"
 "   background-color: beige;\n"
@@ -257,9 +260,9 @@ class Ui_SettingsDialog(object):
         self.label_5.setObjectName("label_5")
         self.horizontalLayout_9.addWidget(self.label_5)
         self.verticalLayout.addLayout(self.horizontalLayout_9)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icons/kubbetussahra_128x128x32.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.tabWidget.addTab(self.tabWidgetPage1, icon, "")
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("icons/kubbetussahra_128x128x32.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabWidget.addTab(self.tabWidgetPage1, icon1, "")
         self.tabWidgetPage2 = QtGui.QWidget()
         self.tabWidgetPage2.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.tabWidgetPage2.setObjectName("tabWidgetPage2")
@@ -278,17 +281,17 @@ class Ui_SettingsDialog(object):
         self.btnStop = QtGui.QToolButton(self.tabWidgetPage2)
         self.btnStop.setMinimumSize(QtCore.QSize(37, 18))
         self.btnStop.setText("")
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("icons/media-playback-pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnStop.setIcon(icon1)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap("icons/media-playback-pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnStop.setIcon(icon2)
         self.btnStop.setObjectName("btnStop")
         self.horizontalLayout_12.addWidget(self.btnStop)
         self.btnPlay = QtGui.QToolButton(self.tabWidgetPage2)
         self.btnPlay.setMinimumSize(QtCore.QSize(37, 18))
         self.btnPlay.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("icons/media-playback-start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnPlay.setIcon(icon2)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap("icons/media-playback-start.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnPlay.setIcon(icon3)
         self.btnPlay.setObjectName("btnPlay")
         self.horizontalLayout_12.addWidget(self.btnPlay)
         self.cboxAzanSound = QtGui.QComboBox(self.tabWidgetPage2)
@@ -321,9 +324,9 @@ class Ui_SettingsDialog(object):
         self.verticalLayout_4.addLayout(self.horizontalLayout_14)
         spacerItem8 = QtGui.QSpacerItem(20, 344, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout_4.addItem(spacerItem8)
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("icons/preferences-desktop-sound.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.tabWidget.addTab(self.tabWidgetPage2, icon3, "")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap("icons/preferences-desktop-sound.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.tabWidget.addTab(self.tabWidgetPage2, icon4, "")
         self.horizontalLayout_11.addWidget(self.tabWidget)
         self.verticalLayout_5.addLayout(self.horizontalLayout_11)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()

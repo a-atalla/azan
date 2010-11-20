@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Settings</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icons/configure.png</normaloff>icons/configure.png</iconset>
+  </property>
   <property name="layoutDirection">
    <enum>Qt::LeftToRight</enum>
   </property>

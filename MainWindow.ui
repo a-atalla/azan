@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>417</width>
-    <height>397</height>
+    <height>379</height>
    </rect>
   </property>
   <property name="font">
@@ -18,6 +18,10 @@
   </property>
   <property name="windowTitle">
    <string>Azan</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>icons/kaba.png</normaloff>icons/kaba.png</iconset>
   </property>
   <property name="styleSheet">
    <string notr="true">.QWidget ,QDialog,QGroupBox {
@@ -216,12 +220,24 @@ QDialogButtonBox {
     </item>
     <item>
      <widget class="QFrame" name="frame">
+      <property name="font">
+       <font>
+        <family>KacstQurn</family>
+       </font>
+      </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
         <widget class="QLabel" name="lblFajr">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string>الفجر</string>
          </property>
@@ -232,6 +248,13 @@ QDialogButtonBox {
        </item>
        <item row="0" column="1">
         <widget class="QLabel" name="lblShrook">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string>الشروق</string>
          </property>
@@ -242,6 +265,13 @@ QDialogButtonBox {
        </item>
        <item row="0" column="2">
         <widget class="QLabel" name="lblZuhr">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string>الظهر</string>
          </property>
@@ -282,6 +312,13 @@ QDialogButtonBox {
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="lblAsr">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string>العصر</string>
          </property>
@@ -292,6 +329,13 @@ QDialogButtonBox {
        </item>
        <item row="2" column="1">
         <widget class="QLabel" name="lblMaghrib">
+         <property name="font">
+          <font>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
+          </font>
+         </property>
          <property name="text">
           <string>المغرب</string>
          </property>
@@ -302,6 +346,15 @@ QDialogButtonBox {
        </item>
        <item row="2" column="2">
         <widget class="QLabel" name="lblIsha">
+         <property name="font">
+          <font>
+           <family>KacstQurn</family>
+           <pointsize>11</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
          <property name="styleSheet">
           <string notr="true">font: 11pt &quot;KacstQurn&quot;;</string>
          </property>
@@ -366,6 +419,13 @@ QDialogButtonBox {
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QPushButton" name="btnHide">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <italic>false</italic>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>إخفاء</string>
         </property>
@@ -373,6 +433,13 @@ QDialogButtonBox {
       </item>
       <item>
        <widget class="QPushButton" name="btnSettings">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <italic>false</italic>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>الأعدادات</string>
         </property>

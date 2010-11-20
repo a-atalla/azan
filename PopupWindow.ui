@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>270</width>
-    <height>185</height>
+    <width>324</width>
+    <height>207</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>KacstQurn</family>
+    <pointsize>14</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -138,26 +144,19 @@ QDialogButtonBox {
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="popupLabel">
-     <property name="font">
-      <font>
-       <family>KacstQurn</family>
-       <weight>75</weight>
-       <italic>false</italic>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>إنتبه</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <widget class="QTextEdit" name="txtPopup">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="font">
       <font>
        <family>KacstQurn</family>
-       <pointsize>16</pointsize>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
     </widget>
