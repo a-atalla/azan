@@ -6,9 +6,27 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>417</width>
-    <height>379</height>
+    <width>450</width>
+    <height>450</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>450</width>
+    <height>450</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>450</width>
+    <height>450</height>
+   </size>
   </property>
   <property name="font">
    <font>
@@ -20,11 +38,14 @@
    <string>Azan</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>icons/kaba.png</normaloff>icons/kaba.png</iconset>
+   <iconset resource="../icons/images.qrc">
+    <normaloff>:/images/kaba.png</normaloff>:/images/kaba.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">.QWidget ,QDialog,QGroupBox {
+   <string notr="true">.QWidget{
+background-image: url(:/images/8.jpg);
+}
+QWidget ,QDialog,QGroupBox {
    background-color: beige;
    font-family: KacstQurn ;
 }
@@ -233,6 +254,7 @@ QDialogButtonBox {
         <widget class="QLabel" name="lblFajr">
          <property name="font">
           <font>
+           <family>KacstQurn</family>
            <weight>75</weight>
            <italic>false</italic>
            <bold>true</bold>
@@ -250,6 +272,7 @@ QDialogButtonBox {
         <widget class="QLabel" name="lblShrook">
          <property name="font">
           <font>
+           <family>KacstQurn</family>
            <weight>75</weight>
            <italic>false</italic>
            <bold>true</bold>
@@ -267,6 +290,7 @@ QDialogButtonBox {
         <widget class="QLabel" name="lblZuhr">
          <property name="font">
           <font>
+           <family>KacstQurn</family>
            <weight>75</weight>
            <italic>false</italic>
            <bold>true</bold>
@@ -314,6 +338,7 @@ QDialogButtonBox {
         <widget class="QLabel" name="lblAsr">
          <property name="font">
           <font>
+           <family>KacstQurn</family>
            <weight>75</weight>
            <italic>false</italic>
            <bold>true</bold>
@@ -331,6 +356,7 @@ QDialogButtonBox {
         <widget class="QLabel" name="lblMaghrib">
          <property name="font">
           <font>
+           <family>KacstQurn</family>
            <weight>75</weight>
            <italic>false</italic>
            <bold>true</bold>
@@ -421,6 +447,7 @@ QDialogButtonBox {
        <widget class="QPushButton" name="btnHide">
         <property name="font">
          <font>
+          <family>KacstQurn</family>
           <weight>75</weight>
           <italic>false</italic>
           <bold>true</bold>
@@ -435,6 +462,7 @@ QDialogButtonBox {
        <widget class="QPushButton" name="btnSettings">
         <property name="font">
          <font>
+          <family>KacstQurn</family>
           <weight>75</weight>
           <italic>false</italic>
           <bold>true</bold>
@@ -453,7 +481,7 @@ QDialogButtonBox {
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
-          <height>20</height>
+          <height>40</height>
          </size>
         </property>
        </spacer>
@@ -467,8 +495,8 @@ QDialogButtonBox {
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>417</width>
-     <height>27</height>
+     <width>450</width>
+     <height>28</height>
     </rect>
    </property>
   </widget>
@@ -488,6 +516,8 @@ QDialogButtonBox {
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons/images.qrc"/>
+ </resources>
  <connections/>
 </ui>

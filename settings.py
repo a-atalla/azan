@@ -1,116 +1,24 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-import sys
 import os
-import random
-from PyQt4 import QtGui, QtCore, QtSql
-from PyQt4.phonon import Phonon
+import sys
 from prayertime import *
-from Ui_MainWindow import  *
-from Ui_SettingsDialog import *
-from Ui_PopupWindow import *
+from PyQt4 import QtGui, QtCore, QtSql, uic
 
-class Azan(QtGui.QMainWindow,Ui_MainWindow):
-    def __init__(self):
-        QtGui.QMainWindow.__init__(self)
-        self.setupUi(self)
-        self.audioOutput = Phonon.AudioOutput(Phonon.MusicCategory, self)
-        self.mediaObject = Phonon.MediaObject(self)
-        self.metaInformationResolver = Phonon.MediaObject(self)
-        Phonon.createPath(self.mediaObject, self.audioOutput)
-        self.timer = QtCore.QTimer(self)
-        self.timer.start(1000)
-        self.center()
-        self.TrayIcon()
-        self.showTime()
-        self.connections()  
-        
-    def showTime(self):
-        nowTime =QtCore.QDateTime.currentDateTime().toString("h:m:s A")
-        nowDate =QtCore.QDateTime.currentDateTime().toString("ddd dd MMM yyyy")
-        self.lblCurrentTime.setText(nowTime)
-        self.lblCurrentDate.setText(nowDate)
-        if  str(nowTime) == self.txtFajr.text():
-            print "it is Fajr time"
-            self.playAzan()
-        if  str(nowTime) == self.txtZuhr.text():
-            print "it is Zuhr time"
-            self.playAzan()
-        if  str(nowTime) == self.txtAsr.text():
-            print "it is Asr time"
-            self.playAzan()
-        if  str(nowTime) == self.txtMaghrib.text():
-            print "it is Maghrib time"
-            self.playAzan()
-        if  str(nowTime) == self.txtIshaa.text():
-            print "it is Ishaa time"
-            self.playAzan()
-
-    def center(self):
-        screen = QtGui.QDesktopWidget().screenGeometry()
-        size =  self.geometry()
-        self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
-
-    def TrayIcon(self):
-        self.trayicon=QtGui.QSystemTrayIcon(QtGui.QIcon('icons/kaba.png'))
-        self.trayicon.setToolTip('Azan Prayer Times')
-        self.traymenu=QtGui.QMenu()
-        self.traymenu.addAction(self.actionShow)
-        self.traymenu.addAction(self.actionStopAzan)
-        self.traymenu.addAction(self.actionClose)
-        self.trayicon.setContextMenu(self.traymenu)
-        self.trayicon.show()
-        
-    def playAzan(self):
-        settings = QtCore.QSettings('Azan')
-        if  not os.path.isfile(settings.fileName()):
-            azanSound = 'sounds/makka.ogg'
-        else:
-            azanSound= settings.value('Azan').toString()
-        snd = Phonon.MediaSource(azanSound)
-        self.mediaObject.clearQueue()
-        self.mediaObject.setCurrentSource(snd)
-        self.mediaObject.play()
-        
-    def stopAzan(self):
-        self.mediaObject.stop()
-        
-    def showSettings(self):
-        settingsDialog.show()
-        settingsDialog.cityCoordinates()
-
-    def connections(self):
-        self.connect(self.btnSettings, QtCore.SIGNAL('clicked()'), self.showSettings)
-        self.connect(self.timer,QtCore.SIGNAL("timeout()"), self.showTime)
-        self.connect(self.btnHide, QtCore.SIGNAL('clicked()'), self.hide)
-        self.connect(self.actionShow, QtCore.SIGNAL('triggered()'), self.show)
-        self.connect(self.actionClose, QtCore.SIGNAL('triggered()'), self.close)
-        self.connect(self.actionStopAzan, QtCore.SIGNAL('triggered()'), self.stopAzan)
-        
-    def closeEvent(event,self):
-        settingsDialog.db.close()
-        del  settingsDialog.db #avoiding db reomveDatabase warning
-        if settingsDialog.isVisible():
-            settingsDialog.close()
-        if  azkar.isVisible():
-            azkar.close()
-
-class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
+class SettingsDialog(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        self.setupUi(self)
+        uic.loadUi("ui/SettingsDialog.ui", self)
         self.center()
-        self.database()
         self.connections()
-        self.settings()
-        # ####################################
-        
+
     def center(self):
         screen = QtGui.QDesktopWidget().screenGeometry()
         size =  self.geometry()
         self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
     
     def database(self):
+        '''Connect to Database and list the countries in the countries list box
+        That will fill the Countries list box
+        '''
         self.db=QtSql.QSqlDatabase.addDatabase('QSQLITE')
         self.db.setDatabaseName('database/CountriesDB')
         self.db.open()
@@ -119,8 +27,13 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         while self.query.next():
             country = self.query.value(0).toString()   
             self.listCountries.addItem(country)
+        
 
     def  getcity(self):
+        '''list the cities in its listbox for the selected country 
+        That will fill the cities list box
+        '''
+
         self.listCities.clear()
         CurrentCountry=str((self.listCountries.currentItem()).text())
         self.query.exec_('SELECT * FROM countriesTable WHERE countryName =' +"'"+CurrentCountry+"'")
@@ -130,8 +43,12 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         while self.query.next():
             city= self.query.value(0).toString()   
             self.listCities.addItem(city)
+
             
     def  cityCoordinates(self):
+        '''From the selected city This will get the city data and show them in 
+        the settings form 
+        '''
         self.city = str(self.listCities.currentItem().text())
         self.query.exec_('SELECT longitude  FROM citiesTable WHERE cityName =' +"'"+self.city+"'")
         while self.query.next():
@@ -145,9 +62,14 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         while self.query.next():
             self.timeZone =str(int((self.query.value(0)).toString())/100)
             self.txtTimeZone.setText(self.timeZone) 
+        
+ 
      
     def settings(self):
-        user=os.getenv('USER')
+        '''This method will load the settings from config file
+        if the program started for t he first time the config file will not exists
+        so it will load the default settings 
+        '''
         settings = QtCore.QSettings('Azan')
         if  not os.path.isfile(settings.fileName()):
             #Default settings when the config file doesnot exist
@@ -183,10 +105,20 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
             
             self.azkarlocation=settings.value('AzkarLocation').toString()
             
+       
+        
+        
+        # The following part of code will make the country and city selected in the list boxes
+        for  i  in range (0, self.listCountries.count()):
+            if self.listCountries.item(i).text() == self.country:
+                self.listCountries.setCurrentRow(i)
+        for  i  in range (0, self.listCities.count()):
+            if self.listCities.item(i).text() == self.city:
+                self.listCities.setCurrentRow(i)
+                
         self.spinShowZekrTimer.setValue(int(self.azkartime))
         self.spinHideZekrTimer.setValue(int(self.hideazkartime))
-        azan.lblCurrentCity.setText(self.city)
-        azan.lblCurrentCountry.setText(self.country)
+        
         if  self.cal == 'UmmAlQuraUniv':
             self.calendar=Calendar.UmmAlQuraUniv
             self.cboxCalendar.setCurrentIndex(0)
@@ -238,6 +170,9 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         
         
     def saveSettings(self):
+        ''' This method will collect the various settings from the settings dialog and
+        save them in  config file "Azan" for the next startup
+        '''
         settings = QtCore.QSettings('Azan')
         # Save the city   and country
         settings.setValue('country', self.listCountries.currentItem().text())
@@ -294,7 +229,6 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         if self.rbBottomRight.isChecked():
              settings.setValue('AzkarLocation', 'BottomRight')
             
-            
         self.calculate()
         
         
@@ -303,113 +237,30 @@ class SettingsDialog(QtGui.QDialog, Ui_SettingsDialog):
         month=int(QtCore.QDateTime.currentDateTime().toString("MM"))
         day=int(QtCore.QDateTime.currentDateTime().toString("dd"))
         self.settings()
-        azan.lblCurrentCity.setText(self.city)
-        azan.lblCurrentCountry.setText(self.country)
         for  i  in range (0, self.listCountries.count()):
             if self.listCountries.item(i).text() == self.country:
                 self.listCountries.setCurrentRow(i)
         for  i  in range (0, self.listCities.count()):
             if self.listCities.item(i).text() == self.city:
-                self.listCities.setCurrentRow(i)         
+                self.listCities.setCurrentRow(i)
         pt=Prayertime(self.longitude, self.latitude,self.timeZone, year, month, day ,self.calendar, self.mazhab, self.season)
         pt.calculate()
         print 'Qibla Direction is ', pt.get_qibla();
-        azan.txtFajr.setText(pt.fajr_time())
-        azan.txtShrouk.setText(pt.shrouk_time())
-        azan.txtZuhr.setText(pt.zuhr_time())
-        azan.txtAsr.setText(pt.asr_time())
-        azan.txtMaghrib.setText(pt.maghrib_time())
-        azan.txtIshaa.setText(pt.isha_time())
-
+        self.FajrTime=pt.fajr_time()
+        self.ShroukTime=pt.shrouk_time()
+        self.ZuhrTime=pt.zuhr_time()
+        self.AsrTime=pt.asr_time()
+        self.MaghribTime=pt.maghrib_time()
+        self.IshaTime=pt.isha_time()
+    
     def connections(self):
         self.connect(self.listCountries,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.getcity)
         self.connect(self.listCities,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.cityCoordinates)
         self.connect(self.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.saveSettings)
-       
-        
         self.connect(self.listCountries, QtCore.SIGNAL("currentItemChanged(QListWidgetItem*,QListWidgetItem*)"), self.getcity)
-        self.connect(self.btnPlay, QtCore.SIGNAL('clicked()'), azan.playAzan)
-        self.connect(self.btnStop, QtCore.SIGNAL('clicked()'), azan.stopAzan)
-
-class PopupWindow(QtGui.QWidget, Ui_Form):
-    def __init__(self):
-        QtGui.QWidget.__init__(self)
-        self.setupUi(self)
-        self.setWindowFlags(QtCore.Qt.Tool)  
-        self.location()
-        self.startTiming()
-        self.connections()
-       
-    def location(self):
-        screen = QtGui.QDesktopWidget().screenGeometry()
-        size =  self.geometry()
-        if settingsDialog.azkarlocation == 'TopLeft':
-            self.move(0, 0)
-        if settingsDialog.azkarlocation == 'TopRight':
-            self.move((screen.width()-size.width()), 0)
-        if settingsDialog.azkarlocation == 'BottomLeft':
-            self.move(0,(screen.height()-size.height()))
-        if settingsDialog.azkarlocation == 'BottomRight':
-            self.move((screen.width()-size.width()), (screen.height()-size.height()))
-        
-    def showEvent(self, event):
-        hideTime =(int(settingsDialog.hideazkartime) * 1000)
-        self.timerHideZekr.start(hideTime)
-        
-    def startTiming(self):
-        print 'Timing is started'
-        global  timerHideZekr , timerShowZekr
-        self.timerHideZekr=QtCore.QTimer(self)
-        hideTime =(int(settingsDialog.hideazkartime) * 1000)
-        self.timerHideZekr.start(hideTime)
-        
-        showTime =(int(settingsDialog.azkartime) * 1000)+hideTime
-        self.timerShowZekr = QtCore.QTimer(self)
-        self.timerShowZekr.stop()
-        self.timerShowZekr.start(showTime)
-    
-    def resetTiming(self):
-        self.timerShowZekr.stop()
-        self.timerHideZekr.stop()
-        hideTime =(int(settingsDialog.hideazkartime) * 1000)
-        self.timerHideZekr.start(hideTime)
-        
-        showTime =(int(settingsDialog.azkartime) * 1000)+hideTime
-        self.timerShowZekr.start(showTime)
-        
-        
-   
-    def showZekr(self):
-        i=random.randint(0, 24)
-        azkarList=[]
-        self.query=QtSql.QSqlQuery()
-        self.query.exec_('SELECT zekr FROM azkar')
-        while self.query.next():
-            zekr = self.query.value(0).toString()   
-            azkarList.append(zekr)
-        self.txtPopup.setText(azkarList[i])
-        self.show()
-        
-    def connections(self):
-        self.connect(self.btnClosePopup, QtCore.SIGNAL('clicked()'), self.hide)
-        self.connect(self.timerShowZekr,QtCore.SIGNAL("timeout()"), self.showZekr)
-        self.connect(self.timerHideZekr,QtCore.SIGNAL("timeout()"), self.hide)
-        self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.resetTiming)
-        self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.location)
 
 def main():
-    global azan, settingsDialog, azkar
-    app=QtGui.QApplication(sys.argv)
-    QtCore.QCoreApplication.setApplicationName('Azan')
-    azan=Azan()
-    azan.show()
-    
-    settingsDialog=SettingsDialog()
-    settingsDialog.calculate()
-
-    azkar=PopupWindow()
-
-    sys.exit(app.exec_())
-    
+    settingsDialog=settingsDialog()
+    settingsDialog.database()
 if __name__ == "__main__":
     main()
