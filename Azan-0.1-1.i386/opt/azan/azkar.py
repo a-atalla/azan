@@ -54,8 +54,7 @@ class PopupWindow(QtGui.QWidget):
         
         showTime =(int(settingsDialog.azkartime) * 60000)+hideTime
         self.timerShowZekr.start(showTime)
-        self.timerShowZekr.stop()
-        self.timerShowZekr.start(showTime)
+        
         
    
     def showZekr(self):

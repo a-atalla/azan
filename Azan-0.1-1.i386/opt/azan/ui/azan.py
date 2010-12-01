@@ -1,26 +1,14 @@
 import sys
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.phonon import Phonon
-import images
 from settings import *
-from azkar import *
 
 class Azan(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         uic.loadUi("ui/MainWindow.ui", self)
-
-        global settingsDialog
+        global     settingsDialog
         settingsDialog=SettingsDialog()
-        settingsDialog.database()
-        settingsDialog.calculate()
-        settingsDialog.getcity()
-        settingsDialog.settings()
-        settingsDialog.cityCoordinates()
-            
-        global azkar
-        azkar = PopupWindow() 
-
         self.audioOutput = Phonon.AudioOutput(Phonon.MusicCategory, self)
         self.mediaObject = Phonon.MediaObject(self)
         self.metaInformationResolver = Phonon.MediaObject(self)
@@ -28,26 +16,12 @@ class Azan(QtGui.QMainWindow):
         
         self.timer = QtCore.QTimer(self)
         self.timer.start(1000)
-        
         self.center()
         self.TrayIcon()
         self.displayTime()
-        self.refreshWindow()
         self.connections()  
-    def refreshWindow(self):
-        settingsDialog.calculate()
-        self.lblCurrentCity.setText(settingsDialog.city)
-        self.lblCurrentCountry.setText(settingsDialog.country)
-        self.txtFajr.setText(settingsDialog.FajrTime)
-        self.txtShrouk.setText(settingsDialog.ShroukTime)
-        self.txtZuhr.setText(settingsDialog.ZuhrTime)
-        self.txtAsr.setText(settingsDialog.AsrTime)
-        self.txtMaghrib.setText(settingsDialog.MaghribTime)
-        self.txtIshaa.setText(settingsDialog.IshaTime)
         
     def displayTime(self):
-        '''Display Time in the main window ,and play sound when the time is equal of any pray
-        '''
         nowTime =QtCore.QDateTime.currentDateTime().toString("h:m:s A")
         nowDate =QtCore.QDateTime.currentDateTime().toString("ddd dd MMM yyyy")
         self.lblCurrentTime.setText(nowTime)
@@ -74,25 +48,14 @@ class Azan(QtGui.QMainWindow):
         self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
 
     def TrayIcon(self):
-        self.trayicon=QtGui.QSystemTrayIcon(QtGui.QIcon(":/images/images/kaba.png"))
+        self.trayicon=QtGui.QSystemTrayIcon(QtGui.QIcon('icons/kaba.png'))
         self.trayicon.setToolTip('Azan Prayer Times')
-
         self.traymenu=QtGui.QMenu()
-
         self.traymenu.addAction(self.actionShow)
         self.traymenu.addAction(self.actionStopAzan)
         self.traymenu.addAction(self.actionClose)
         self.trayicon.setContextMenu(self.traymenu)
         self.trayicon.show()
-        
-    def onTrayIconActivated(self, reason):
-        if reason == QtGui.QSystemTrayIcon.DoubleClick:
-            if self.isVisible():
-                self.hide()
-            else:
-                self.show()
-
-
         
     def playAzan(self):
         settings = QtCore.QSettings('Azan')
@@ -110,6 +73,7 @@ class Azan(QtGui.QMainWindow):
         
     def showSettings(self):
         settingsDialog.show()
+#        settingsDialog.cityCoordinates()
 
     def connections(self):
         self.connect(self.btnSettings, QtCore.SIGNAL('clicked()'), self.showSettings)
@@ -119,19 +83,12 @@ class Azan(QtGui.QMainWindow):
         self.connect(self.actionClose, QtCore.SIGNAL('triggered()'), self.close)
         self.connect(self.actionStopAzan, QtCore.SIGNAL('triggered()'), self.stopAzan)
         
-        self.connect(settingsDialog.btnPlay, QtCore.SIGNAL('clicked()'), self.playAzan)
-        self.connect(settingsDialog.btnStop, QtCore.SIGNAL('clicked()'), self.stopAzan)
-        self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.refreshWindow)
-        self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), azkar.resetTiming)
-        self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), azkar.location)
         
-        self.trayicon.activated.connect(self.onTrayIconActivated)
-
-
         
     def closeEvent(event,self):
         settingsDialog.db.close()
         del  settingsDialog.db #avoiding db reomveDatabase warning
         if settingsDialog.isVisible():
             settingsDialog.close()
-
+#        if  azkar.isVisible():
+#            azkar.close()

@@ -1,7 +1,7 @@
 import sys
 from PyQt4 import QtGui, QtCore, uic
 from PyQt4.phonon import Phonon
-import images
+
 from settings import *
 from azkar import *
 
@@ -9,7 +9,7 @@ class Azan(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         uic.loadUi("ui/MainWindow.ui", self)
-
+        
         global settingsDialog
         settingsDialog=SettingsDialog()
         settingsDialog.database()
@@ -74,25 +74,14 @@ class Azan(QtGui.QMainWindow):
         self.move((screen.width()-size.width())/2, (screen.height()-size.height())/2)
 
     def TrayIcon(self):
-        self.trayicon=QtGui.QSystemTrayIcon(QtGui.QIcon(":/images/images/kaba.png"))
+        self.trayicon=QtGui.QSystemTrayIcon(QtGui.QIcon('icons/kaba.png'))
         self.trayicon.setToolTip('Azan Prayer Times')
-
         self.traymenu=QtGui.QMenu()
-
         self.traymenu.addAction(self.actionShow)
         self.traymenu.addAction(self.actionStopAzan)
         self.traymenu.addAction(self.actionClose)
         self.trayicon.setContextMenu(self.traymenu)
         self.trayicon.show()
-        
-    def onTrayIconActivated(self, reason):
-        if reason == QtGui.QSystemTrayIcon.DoubleClick:
-            if self.isVisible():
-                self.hide()
-            else:
-                self.show()
-
-
         
     def playAzan(self):
         settings = QtCore.QSettings('Azan')
@@ -124,9 +113,6 @@ class Azan(QtGui.QMainWindow):
         self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.refreshWindow)
         self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), azkar.resetTiming)
         self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), azkar.location)
-        
-        self.trayicon.activated.connect(self.onTrayIconActivated)
-
 
         
     def closeEvent(event,self):
