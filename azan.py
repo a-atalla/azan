@@ -183,7 +183,7 @@ class Azan(QtGui.QMainWindow):
       
     def load_qibla(self):
         direction = settingsDialog.qibla_direction()
-        simple_qibla_xml = self.qibla_svg(0)#direction)
+        simple_qibla_xml = self.qibla_svg(direction)
         qibla = QtCore.QByteArray(simple_qibla_xml)
         self.svgwidget.load(qibla)
         
