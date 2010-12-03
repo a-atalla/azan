@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 import sys
 from prayertime import *
@@ -231,7 +232,7 @@ class SettingsDialog(QtGui.QDialog):
             
         self.calculate()
         
-        
+   
     def  calculate(self):
         year= int(QtCore.QDateTime.currentDateTime().toString("yyyy"))
         month=int(QtCore.QDateTime.currentDateTime().toString("MM"))
@@ -245,14 +246,18 @@ class SettingsDialog(QtGui.QDialog):
                 self.listCities.setCurrentRow(i)
         pt=Prayertime(self.longitude, self.latitude,self.timeZone, year, month, day ,self.calendar, self.mazhab, self.season)
         pt.calculate()
-        print 'Qibla Direction is ', pt.get_qibla();
+        self.qibla = pt.get_qibla()
+        print 'Qibla Direction is ', self.qibla;
         self.FajrTime=pt.fajr_time()
         self.ShroukTime=pt.shrouk_time()
         self.ZuhrTime=pt.zuhr_time()
         self.AsrTime=pt.asr_time()
         self.MaghribTime=pt.maghrib_time()
         self.IshaTime=pt.isha_time()
-    
+        
+    def qibla_direction(self):
+      return self.qibla
+      
     def connections(self):
         self.connect(self.listCountries,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.getcity)
         self.connect(self.listCities,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.cityCoordinates)

@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 import sys
-from PyQt4 import QtGui, QtCore, uic
+from PyQt4 import QtGui, QtCore, QtSvg, uic
 from PyQt4.phonon import Phonon
 import images
 from settings import *
@@ -26,6 +27,11 @@ class Azan(QtGui.QMainWindow):
         self.metaInformationResolver = Phonon.MediaObject(self)
         Phonon.createPath(self.mediaObject, self.audioOutput)
         
+        #svg widget to display qibla svg image
+        self.svgwidget = QtSvg.QSvgWidget()
+        #insert svg widget into main vbox before the last widget
+        self.verticalLayout.insertWidget(4,self.svgwidget)
+        
         self.timer = QtCore.QTimer(self)
         self.timer.start(1000)
         
@@ -34,8 +40,10 @@ class Azan(QtGui.QMainWindow):
         self.displayTime()
         self.refreshWindow()
         self.connections()  
+        
     def refreshWindow(self):
         settingsDialog.calculate()
+        self.load_qibla()
         self.lblCurrentCity.setText(settingsDialog.city)
         self.lblCurrentCountry.setText(settingsDialog.country)
         self.txtFajr.setText(settingsDialog.FajrTime)
@@ -116,7 +124,7 @@ class Azan(QtGui.QMainWindow):
         self.connect(self.timer,QtCore.SIGNAL("timeout()"), self.displayTime)
         self.connect(self.btnHide, QtCore.SIGNAL('clicked()'), self.hide)
         self.connect(self.actionShow, QtCore.SIGNAL('triggered()'), self.show)
-        self.connect(self.actionClose, QtCore.SIGNAL('triggered()'), self.close)
+        self.connect(self.actionClose, QtCore.SIGNAL('triggered()'), self.quit_app)
         self.connect(self.actionStopAzan, QtCore.SIGNAL('triggered()'), self.stopAzan)
         
         self.connect(settingsDialog.btnPlay, QtCore.SIGNAL('clicked()'), self.playAzan)
@@ -126,12 +134,68 @@ class Azan(QtGui.QMainWindow):
         self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), azkar.location)
         
         self.trayicon.activated.connect(self.onTrayIconActivated)
+    
+    def qibla_svg(self,degree):
+        xml='''<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="400"
+   height="400"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.0 r9654"
+   sodipodi:docname="e-kiblah.svg"
+   inkscape:export-filename="/home/romanov/cadr.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+<!-- center of rotation -->
+<circle cx="200" cy="200" r="15" style="fill: black;"/>
+
+<circle cx="200" cy="200" r="195" 
+   style="stroke: brown; fill: none;stroke-width: 10"/>
+
+<!-- non-rotated arrow -->
+<g id="arrow" style="stroke: black;" transform="rotate(%f, 200, 200)">
+    <line x1="200" y1="200" x2="380" y2="200"
+      style="stroke-width: 10; stroke: blue;"/>
+    <polygon points="380  200, 375  195, 375  205"
+      style="stroke-width: 18; stroke: blue;"/>
+    <text x="270" y="180" style="font-weight:bold;font-size: 20">%s °</text>
+</g>
 
 
+
+</svg>''' %(degree,str(int(degree)))
+        return xml
+     
+    def quit_app(self):
+      self.ensure_quit = True
+      self.close()
+      
+    def load_qibla(self):
+        direction = settingsDialog.qibla_direction()
+        simple_qibla_xml = self.qibla_svg(0)#direction)
+        qibla = QtCore.QByteArray(simple_qibla_xml)
+        self.svgwidget.load(qibla)
         
-    def closeEvent(event,self):
-        settingsDialog.db.close()
-        del  settingsDialog.db #avoiding db reomveDatabase warning
-        if settingsDialog.isVisible():
-            settingsDialog.close()
-
+    def closeEvent(self,event):
+        try:
+          if self.ensure_quit:
+	    settingsDialog.db.close()
+            del  settingsDialog.db #avoiding db reomveDatabase warning
+            if settingsDialog.isVisible():
+                settingsDialog.close()
+        except:
+            #ensure_quit isn't defined so just hide
+	    self.hide()
+            event.ignore()
+   
