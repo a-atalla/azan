@@ -180,7 +180,10 @@ class Azan(QtGui.QMainWindow):
     def quit_app(self):
       self.ensure_quit = True
       self.close()
-      
+    
+    def svg_rotation_to_cardinal(degree):
+      pass
+    
     def load_qibla(self):
         direction = settingsDialog.qibla_direction()
         simple_qibla_xml = self.qibla_svg(direction)
