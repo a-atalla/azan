@@ -1,8 +1,8 @@
 <RCC>
   <qresource prefix="images">
     <file>images/back.png</file>
-    <file>images/back.jpeg</file>
     <file>images/configure.png</file>
+    <file>images/preferences-desktop-theme.png</file>
     <file>images/kaba.png</file>
     <file>images/kiblah.svg</file>
     <file>images/kubbetussahra_128x128x32.png</file>

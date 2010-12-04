@@ -8,6 +8,7 @@ class SettingsDialog(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         uic.loadUi("ui/SettingsDialog.ui", self)
+        self.cboxStyle.addItems(QtGui.QStyleFactory.keys())
         self.center()
         self.connections()
 
@@ -258,11 +259,23 @@ class SettingsDialog(QtGui.QDialog):
     def qibla_direction(self):
       return self.qibla
       
+
+    def changeStyle(self, styleName):
+        if styleName == "Custome":
+            pass
+        else:
+            QtGui.QApplication.setStyle(QtGui.QStyleFactory.create(styleName))
+
+        
     def connections(self):
         self.connect(self.listCountries,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.getcity)
         self.connect(self.listCities,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.cityCoordinates)
         self.connect(self.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.saveSettings)
         self.connect(self.listCountries, QtCore.SIGNAL("currentItemChanged(QListWidgetItem*,QListWidgetItem*)"), self.getcity)
+        
+        self.cboxStyle.activated[str].connect(self.changeStyle)
+#        self.connect(self.btnFont, QtCore.SIGNAL('clicked()'), self.fontChange)
+
 
 def main():
     settingsDialog=settingsDialog()

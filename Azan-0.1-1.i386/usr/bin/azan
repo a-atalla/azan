@@ -1,4 +1,0 @@
-#!/usr/bin/env python
-import os
-os.chdir('/opt/azan')
-os.system('python main.py')
