@@ -31,9 +31,8 @@
       style="stroke-width: 10; stroke: blue;"/>
     <polygon points="380  200, 375  195, 375  205"
       style="stroke-width: 18; stroke: blue;"/>
-    <text x="250" y="180" style="font-weight:bold;font-size: 40">%s °</text>
 </g>
 
-
+<text x="190" y="300" style="font-weight:bold;font-size: 20">%s°</text>
 
 </svg>

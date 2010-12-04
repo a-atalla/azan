@@ -31,6 +31,8 @@ class Azan(QtGui.QMainWindow):
         self.svgwidget = QtSvg.QSvgWidget()
         #insert svg widget into main vbox before the last widget
         self.verticalLayout.insertWidget(4,self.svgwidget)
+        self.svgwidget.setSizePolicy(QtGui.QSizePolicy.Maximum,QtGui.QSizePolicy.Maximum)
+        self.svgwidget.setMaximumSize(400,400)
         
         self.timer = QtCore.QTimer(self)
         self.timer.start(1000)
@@ -169,24 +171,23 @@ class Azan(QtGui.QMainWindow):
       style="stroke-width: 10; stroke: blue;"/>
     <polygon points="380  200, 375  195, 375  205"
       style="stroke-width: 18; stroke: blue;"/>
-    <text x="270" y="180" style="font-weight:bold;font-size: 20">%s °</text>
 </g>
 
+<text x="190" y="300" style="font-weight:bold;font-size: 20">%s°</text>
 
-
-</svg>''' %(degree,str(int(degree)))
+</svg>''' %(degree,str(int((degree-90)*100)/100.0))
         return xml
      
     def quit_app(self):
       self.ensure_quit = True
       self.close()
     
-    def svg_rotation_to_cardinal(degree):
-      pass
+    def svg_rotation_to_cardinal(self,degree):
+      return degree+90
     
     def load_qibla(self):
-        direction = settingsDialog.qibla_direction()
-        simple_qibla_xml = self.qibla_svg(direction)
+        direction = settingsDialog.qibla_direction()+180
+        simple_qibla_xml = self.qibla_svg(self.svg_rotation_to_cardinal(direction))
         qibla = QtCore.QByteArray(simple_qibla_xml)
         self.svgwidget.load(qibla)
         
