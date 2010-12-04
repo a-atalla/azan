@@ -21,7 +21,9 @@ class Azan(QtGui.QMainWindow):
             
         global azkar
         azkar = PopupWindow() 
-
+        
+        print settingsDialog.selectedStyle
+        self.changeStyle(settingsDialog.selectedStyle)
         self.audioOutput = Phonon.AudioOutput(Phonon.MusicCategory, self)
         self.mediaObject = Phonon.MediaObject(self)
         self.metaInformationResolver = Phonon.MediaObject(self)
@@ -30,9 +32,9 @@ class Azan(QtGui.QMainWindow):
         #svg widget to display qibla svg image
         self.svgwidget = QtSvg.QSvgWidget()
         #insert svg widget into main vbox before the last widget
-        self.verticalLayout.insertWidget(4,self.svgwidget)
+        self.horizontalLayout.insertWidget(0,self.svgwidget)
         self.svgwidget.setSizePolicy(QtGui.QSizePolicy.Maximum,QtGui.QSizePolicy.Maximum)
-        self.svgwidget.setMaximumSize(400,400)
+        self.svgwidget.setMaximumSize(150,150)
         
         self.timer = QtCore.QTimer(self)
         self.timer.start(1000)
@@ -136,6 +138,98 @@ class Azan(QtGui.QMainWindow):
         self.connect(settingsDialog.btnSaveSettings, QtCore.SIGNAL('clicked()'), azkar.location)
         
         self.trayicon.activated.connect(self.onTrayIconActivated)
+        settingsDialog.cboxStyle.activated[str].connect(self.changeStyle)
+
+    def blueSkyStyle(self):
+        QtGui.QApplication.setStyle(QtGui.QStyleFactory.create("Oxygen"))
+        self.setStyleSheet ('''
+                                    QPushButton {
+                                    color: #333;
+                                    border: 2px solid #555;
+                                    border-radius: 11px;
+                                    padding: 5px;
+                                    background: qradialgradient(cx: 0.3, cy: -0.4,
+                                    fx: 0.3, fy: -0.4,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #888);
+                                    min-width: 80px;
+                                    }
+                                    QPushButton:hover {
+                                    background: qradialgradient(cx: 0.3, cy: -0.4,
+                                    fx: 0.3, fy: -0.4,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+                                    }
+                                    QPushButton:pressed {
+                                    background: qradialgradient(cx: 0.4, cy: -0.1,
+                                    fx: 0.4, fy: -0.1,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+                                    }
+                                    #centralwidget{
+                                    color: rgb(255, 255, 255);
+                                    background-image: url(:/images/images/back.png);
+                                    background-image: url(:/images/images/back.png);}
+                                    ''')
+        settingsDialog.setStyleSheet('''  
+                                    QPushButton,QToolButton {
+                                    color: #333;
+                                    border: 2px solid #555;
+                                    border-radius: 11px;
+                                    padding: 5px;
+                                    background: qradialgradient(cx: 0.3, cy: -0.4,
+                                    fx: 0.3, fy: -0.4,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #888);
+                                    min-width: 80px;
+                                    }
+                                    QPushButton:hover {
+                                    background: qradialgradient(cx: 0.3, cy: -0.4,
+                                    fx: 0.3, fy: -0.4,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+                                    }
+                                    QPushButton:pressed {
+                                    background: qradialgradient(cx: 0.4, cy: -0.1,
+                                    fx: 0.4, fy: -0.1,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+                                    }
+                                    QDialog{
+                                    color: rgb(255, 255, 255);
+                                    background-image: url(:/images/images/back.png);
+                                    background-image: url(:/images/images/back.png);}
+                                      ''') 
+        azkar.setStyleSheet('''  
+                                    QPushButton,QToolButton {
+                                    color: #333;
+                                    border: 2px solid #555;
+                                    border-radius: 11px;
+                                    padding: 5px;
+                                    background: qradialgradient(cx: 0.3, cy: -0.4,
+                                    fx: 0.3, fy: -0.4,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #888);
+                                    min-width: 80px;
+                                    }
+                                    QPushButton:hover {
+                                    background: qradialgradient(cx: 0.3, cy: -0.4,
+                                    fx: 0.3, fy: -0.4,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+                                    }
+                                    QPushButton:pressed {
+                                    background: qradialgradient(cx: 0.4, cy: -0.1,
+                                    fx: 0.4, fy: -0.1,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+                                    }
+                                    QWidget{
+                                    color: rgb(255, 255, 255);
+                                    background-image: url(:/images/images/back.png);
+                                    background-image: url(:/images/images/back.png);}
+                                      ''')                               
+    def changeStyle(self, styleName):
+        if styleName == "BlueSky":
+            self.blueSkyStyle()
+        else:
+            self.setStyleSheet ('''  ''')
+            settingsDialog.setStyleSheet('''  ''') 
+            azkar.setStyleSheet(''' ''')
+            QtGui.QApplication.setStyle(QtGui.QStyleFactory.create(styleName))
+
+
     
     def qibla_svg(self,degree):
         xml='''<?xml version="1.0" encoding="UTF-8" standalone="no"?>

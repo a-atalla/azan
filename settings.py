@@ -87,6 +87,7 @@ class SettingsDialog(QtGui.QDialog):
             self.azkartime='1'
             self.hideazkartime='20'
             self.azkarlocation='BottomRight'
+            self.selectedStyle = 'BlueSky'
         else:
             #Get the setting from the config file
             self.country =settings.value('country').toString()
@@ -98,6 +99,7 @@ class SettingsDialog(QtGui.QDialog):
             self.maz=settings.value('mazhab').toString()
             self.seas=settings.value('season').toString()
             self.azan=settings.value('Azan').toString()
+            self.selectedStyle =settings.value('style').toString()
             
             self.azkartime=settings.value('AzkarTime').toString()
             self.spinShowZekrTimer.setValue(int(self.azkartime))
@@ -170,7 +172,6 @@ class SettingsDialog(QtGui.QDialog):
             self.rbBottomRight.setChecked(1)
         
         
-        
     def saveSettings(self):
         ''' This method will collect the various settings from the settings dialog and
         save them in  config file "Azan" for the next startup
@@ -231,6 +232,9 @@ class SettingsDialog(QtGui.QDialog):
         if self.rbBottomRight.isChecked():
              settings.setValue('AzkarLocation', 'BottomRight')
             
+        # Save selected style
+        settings.setValue('style', self.cboxStyle.currentText())
+        
         self.calculate()
         
    
@@ -258,23 +262,13 @@ class SettingsDialog(QtGui.QDialog):
         
     def qibla_direction(self):
       return self.qibla
-      
-
-    def changeStyle(self, styleName):
-        if styleName == "Custome":
-            pass
-        else:
-            QtGui.QApplication.setStyle(QtGui.QStyleFactory.create(styleName))
-
+    
         
     def connections(self):
         self.connect(self.listCountries,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.getcity)
         self.connect(self.listCities,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.cityCoordinates)
         self.connect(self.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.saveSettings)
         self.connect(self.listCountries, QtCore.SIGNAL("currentItemChanged(QListWidgetItem*,QListWidgetItem*)"), self.getcity)
-        
-        self.cboxStyle.activated[str].connect(self.changeStyle)
-#        self.connect(self.btnFont, QtCore.SIGNAL('clicked()'), self.fontChange)
 
 
 def main():

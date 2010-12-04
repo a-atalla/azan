@@ -2,10 +2,9 @@
   <qresource prefix="images">
     <file>images/back.png</file>
     <file>images/configure.png</file>
-    <file>images/preferences-desktop-theme.png</file>
     <file>images/kaba.png</file>
-    <file>images/kiblah.svg</file>
     <file>images/kubbetussahra_128x128x32.png</file>
+    <file>images/appearance.png</file>
     <file>images/kuran_14_128x128x32.png</file>
     <file>images/lokalize.png</file>
     <file>images/media-playback-pause.png</file>
@@ -16,6 +15,5 @@
     <file>images/preferences-desktop-sound.png</file>
     <file>images/preferences-desktop-text-to-speech.png</file>
     <file>images/seccade.png</file>
-    <file>images/tesbih_128x128x32.png</file>
   </qresource>
 </RCC>

@@ -33,7 +33,30 @@
    <enum>Qt::LeftToRight</enum>
   </property>
   <property name="styleSheet">
-   <string notr="true"/>
+   <string notr="true">QPushButton,QToolButton {
+                                    color: #333;
+                                    border: 2px solid #555;
+                                    border-radius: 11px;
+                                    padding: 5px;
+                                    background: qradialgradient(cx: 0.3, cy: -0.4,
+                                    fx: 0.3, fy: -0.4,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #888);
+                                    min-width: 80px;
+                                    }
+                                    QPushButton:hover {
+                                    background: qradialgradient(cx: 0.3, cy: -0.4,
+                                    fx: 0.3, fy: -0.4,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #bbb);
+                                    }
+                                    QPushButton:pressed {
+                                    background: qradialgradient(cx: 0.4, cy: -0.1,
+                                    fx: 0.4, fy: -0.1,
+                                    radius: 1.35, stop: 0 #fff, stop: 1 #ddd);
+                                    }
+                                    QDialog{
+                                    color: rgb(255, 255, 255);
+                                    background-image: url(:/images/images/back.png);
+                                    background-image: url(:/images/images/back.png);}</string>
   </property>
   <property name="modal">
    <bool>false</bool>
@@ -435,7 +458,7 @@ background-image: url(:/images/images/back.jpeg);
              </property>
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>94</width>
                <height>0</height>
               </size>
              </property>
@@ -470,7 +493,7 @@ background-image: url(:/images/images/back.jpeg);
              </property>
              <property name="minimumSize">
               <size>
-               <width>0</width>
+               <width>94</width>
                <height>0</height>
               </size>
              </property>
@@ -678,7 +701,7 @@ background-image: url(:/images/images/back.jpeg);
        <widget class="QWidget" name="tab">
         <attribute name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/images/images/preferences-desktop-theme.png</normaloff>:/images/images/preferences-desktop-theme.png</iconset>
+          <normaloff>:/images/images/appearance.png</normaloff>:/images/images/appearance.png</iconset>
         </attribute>
         <attribute name="title">
          <string>المظهر</string>
@@ -697,7 +720,7 @@ background-image: url(:/images/images/back.jpeg);
             <widget class="QComboBox" name="cboxStyle">
              <item>
               <property name="text">
-               <string>Custom</string>
+               <string>BlueSky</string>
               </property>
              </item>
             </widget>
