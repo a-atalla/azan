@@ -259,8 +259,10 @@ class Azan(QtGui.QMainWindow):
 <circle cx="200" cy="200" r="195" 
    style="stroke: brown; fill: none;stroke-width: 10"/>
 
-<!-- non-rotated arrow -->
+<!-- rotated arrow -->
 <g id="arrow" style="stroke: black;" transform="rotate(%f, 200, 200)">
+    <line x1="200" y1="200" x2="20" y2="200"
+      style="stroke-width: 10; stroke: blue;"/>
     <line x1="200" y1="200" x2="380" y2="200"
       style="stroke-width: 10; stroke: blue;"/>
     <polygon points="380  200, 375  195, 375  205"
@@ -269,7 +271,7 @@ class Azan(QtGui.QMainWindow):
 
 <text x="190" y="300" style="font-weight:bold;font-size: 20">%s°</text>
 
-</svg>''' %(degree,str(int((degree-90)*100)/100.0))
+</svg>''' %(degree,str(int((degree+90)*100)/100.0))
         return xml
      
     def quit_app(self):
@@ -277,10 +279,12 @@ class Azan(QtGui.QMainWindow):
       self.close()
     
     def svg_rotation_to_cardinal(self,degree):
-      return degree+90
+      #top: north
+      return degree-90
     
     def load_qibla(self):
-        direction = settingsDialog.qibla_direction()+180
+        direction = settingsDialog.qibla_direction()
+        if direction < 0 : direction += 360
         simple_qibla_xml = self.qibla_svg(self.svg_rotation_to_cardinal(direction))
         qibla = QtCore.QByteArray(simple_qibla_xml)
         self.svgwidget.load(qibla)

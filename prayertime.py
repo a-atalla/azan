@@ -27,7 +27,7 @@ __author__ = "Ahmed Youssef"
 __all__ = ['Season', 'Calendar', 'Prayertime', 'Mazhab', \
         'as_pytime', 'as_pydatetime']
 
-from math import degrees, radians, atan, asin, acos, cos, sin, tan 
+from math import degrees, radians, atan, atan2, asin, acos, cos, sin, tan 
 from datetime import date, datetime
 from time import strptime
 
@@ -287,7 +287,7 @@ class Prayertime(object):
         
         numerator = sin(k_lon - longitude)
         denominator = (cos(latitude) * tan(k_lat)) - (sin(latitude) * cos(k_lon - longitude))
-        q = atan(numerator / denominator)
+        q = atan2(numerator,denominator)
         
         q = degrees(q)
         
