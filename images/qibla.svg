@@ -15,12 +15,19 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.47 r22583"
-   sodipodi:docname="cadr.svg"
+   sodipodi:docname="qibla.svg"
    inkscape:export-filename="/home/romanov/cadr.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
      id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 143.12846 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="286.90469 : 143.12846 : 1"
+       inkscape:persp3d-origin="143.45235 : 95.418976 : 1"
+       id="perspective133" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient4329">
@@ -249,17 +256,17 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1"
      inkscape:cx="178.76937"
-     inkscape:cy="148.47815"
+     inkscape:cy="146.47815"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:snap-nodes="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1020"
-     inkscape:window-height="674"
-     inkscape:window-x="-2"
-     inkscape:window-y="34"
+     inkscape:window-width="1024"
+     inkscape:window-height="720"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -269,7 +276,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

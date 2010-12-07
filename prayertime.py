@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # -*- coding: utf-8 -*-
 #
@@ -292,6 +293,20 @@ class Prayertime(object):
         q = degrees(q)
         
         return q;
+        
+    def qibla_distance(self):
+    
+        k_lat = radians(21.423333);
+        k_lon = radians(39.823333);
+    
+        longitude = radians(self.coordinate.longitude)
+        latitude =  radians(self.coordinate.latitude)
+    
+        r = 6378.7 #kilometers
+    
+        return acos(sin(k_lat) * sin(latitude) + cos(k_lat) * cos(latitude) * cos(longitude-k_lon)) * r
+    
+  
     #def report_full(self):
         #"""Simple report of all prayertimes."""
         

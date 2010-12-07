@@ -253,8 +253,7 @@ class Azan(QtGui.QMainWindow):
    inkscape:export-filename="/home/romanov/cadr.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
-<!-- center of rotation -->
-<circle cx="200" cy="200" r="15" style="fill: black;"/>
+
 
 <circle cx="200" cy="200" r="195" 
    style="stroke: brown; fill: none;stroke-width: 10"/>
@@ -268,6 +267,9 @@ class Azan(QtGui.QMainWindow):
     <polygon points="380  200, 375  195, 375  205"
       style="stroke-width: 18; stroke: blue;"/>
 </g>
+
+<!-- center of rotation -->
+<circle cx="200" cy="200" r="15" style="fill: black;"/>
 
 <text x="190" y="300" style="font-weight:bold;font-size: 20">%s°</text>
 
