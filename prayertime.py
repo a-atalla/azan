@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-# -*- coding: utf-8 -*-
 #
 #       prayertime.py
 #       
@@ -321,6 +319,7 @@ if __name__=="__main__":
     
     pt=Prayertime(31.2599, 30.0599, 2, 2010, 10, 29, Calendar.EgyptianGeneralAuthorityOfSurvey, Mazhab.Default, Season.Winter)
     print pt.get_qibla();
+    print pt.qibla_distance();
     pt.calculate()
     pt.report()
 
