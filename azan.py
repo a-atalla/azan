@@ -1,4 +1,5 @@
-# -*- coding: utf-8 -*-
+# -*- coding: UTF-8 -*-
+
 import sys
 from PyQt4 import QtGui, QtCore, QtSvg, uic
 from PyQt4.phonon import Phonon
@@ -22,7 +23,6 @@ class Azan(QtGui.QMainWindow):
         global azkar
         azkar = PopupWindow() 
         
-        print settingsDialog.selectedStyle
         self.changeStyle(settingsDialog.selectedStyle)
         self.audioOutput = Phonon.AudioOutput(Phonon.MusicCategory, self)
         self.mediaObject = Phonon.MediaObject(self)
@@ -31,8 +31,9 @@ class Azan(QtGui.QMainWindow):
         
         #svg widget to display qibla svg image
         self.svgwidget = QtSvg.QSvgWidget()
+        
         #insert svg widget into main vbox before the last widget
-        self.horizontalLayout.insertWidget(0,self.svgwidget)
+        self.horizontalLayout_3.insertWidget(0,self.svgwidget)
         self.svgwidget.setSizePolicy(QtGui.QSizePolicy.Maximum,QtGui.QSizePolicy.Maximum)
         self.svgwidget.setMaximumSize(150,150)
         
@@ -41,10 +42,12 @@ class Azan(QtGui.QMainWindow):
         
         self.center()
         self.TrayIcon()
+#        self.trayicon.showMessage(u"أنتبه", u"حان الآن موعداذان الفجر ", msecs= 2000)
         self.displayTime()
         self.refreshWindow()
         self.connections()  
-        
+        self.nextPrayer()
+
     def refreshWindow(self):
         settingsDialog.calculate()
         self.load_qibla()
@@ -57,27 +60,51 @@ class Azan(QtGui.QMainWindow):
         self.txtMaghrib.setText(settingsDialog.MaghribTime)
         self.txtIshaa.setText(settingsDialog.IshaTime)
         
+        
+       
     def displayTime(self):
         '''Display Time in the main window ,and play sound when the time is equal of any pray
         '''
-        nowTime =QtCore.QDateTime.currentDateTime().toString("h:m:s A")
-        nowDate =QtCore.QDateTime.currentDateTime().toString("ddd dd MMM yyyy")
+        global nowTime, nowDate
+        nowTime =QtCore.QTime.currentTime().toString("h:m:s A")
+        nowDate =QtCore.QDate.currentDate().toString("ddd dd MMM yyyy")
         self.lblCurrentTime.setText(nowTime)
         self.lblCurrentDate.setText(nowDate)
+        
+        # Show Tray Message befor prayer with 5 min
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtFajr.text(), "h:m:s A"))  == 300 :
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الفجر 5 دقائق  ", msecs = 300000)
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtZuhr.text(), "h:m:s A"))  == 300 :
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الظهر 5 دقائق", msecs = 300000)
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtAsr.text(), "h:m:s A"))  == 300 :
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العصر 5 دقائق ", msecs = 300000)
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtMaghrib.text(), "h:m:s A"))  == 300 :
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة المغرب 5 دقائق ", msecs = 300000)
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtIshaa.text(), "h:m:s A"))  == 300 :
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العشاء 5 دقائق  ", msecs = 300000)
+            
+            
+        
+        
+        # Play Azan and show tray message at prayer  time
         if  str(nowTime) == self.txtFajr.text():
-            print "it is Fajr time"
+            self.trayicon.showMessage(u"أنتبه", u"حان الآن موعداذان الفجر ", msecs = 200000)
             self.playAzan()
+        
         if  str(nowTime) == self.txtZuhr.text():
-            print "it is Zuhr time"
+            self.trayicon.showMessage(u"أنتبه", u"حان الآن موعداذان الظهر ", msecs = 200000)
             self.playAzan()
+        
         if  str(nowTime) == self.txtAsr.text():
-            print "it is Asr time"
+            self.trayicon.showMessage(u"أنتبه", u"حان الآن موعداذان العصر ", msecs = 200000)
             self.playAzan()
+        
         if  str(nowTime) == self.txtMaghrib.text():
-            print "it is Maghrib time"
+            self.trayicon.showMessage(u"أنتبه", u"حان الآن موعداذان المغرب ", msecs = 200000)
             self.playAzan()
+        
         if  str(nowTime) == self.txtIshaa.text():
-            print "it is Ishaa time"
+            self.trayicon.showMessage(u"أنتبه", u"حان الآن موعد أذان العشاء", msecs = 200000)
             self.playAzan()
 
     def center(self):
@@ -291,6 +318,42 @@ class Azan(QtGui.QMainWindow):
         qibla = QtCore.QByteArray(simple_qibla_xml)
         self.svgwidget.load(qibla)
         
+    
+    def nextPrayer(self):
+        prayerList = [str(self.txtFajr.text()) ,  str(self.txtShrouk.text()) , str(self.txtZuhr.text()), str(self.txtAsr.text()), str(self.txtMaghrib.text()) ,  str(self.txtIshaa.text())]
+        for prayer in prayerList:
+            nowTime=QtCore.QDateTime.currentDateTime().toString("h:m:s A")
+            nowTime =QtCore.QDateTime.fromString(nowTime, "h:m:s A")       
+            Secs=nowTime.secsTo(QtCore.QDateTime.fromString(prayer, "h:m:s A")) 
+            print Secs
+            if Secs > 0 :
+                if prayerList.index(prayer) == 0 :
+                    self.nextPrayer = "Fajr"
+                    self.lblNextPrayer.setText(u"الفجر")
+                    self.lblPrevPrayer.setText(u"العشاء")
+                if prayerList.index(prayer) == 1 :
+                    self.nextPrayer = "Shorouk"
+                    self.lblPrevPrayer.setText(u"الشروق")
+                    self.lblPrevPrayer.setText(u"الفجر")
+                if prayerList.index(prayer) == 2 :
+                    self.nextPrayer = "uZuhr"
+                    self.lblNextPrayer.setText(u"الظهر")
+                    self.lblPrevPrayer.setText(u"الشروق")
+                if prayerList.index(prayer) == 3 :
+                    self.nextPrayer = "Asr"
+                    self.lblNextPrayer.setText(u"العصر")
+                    self.lblPrevPrayer.setText(u"الظهر")
+                if prayerList.index(prayer) == 4 :
+                    self.nextPrayer = "Maghrib"
+                    self.lblNextPrayer.setText(u"المغرب")
+                    self.lblPrevPrayer.setText(u"العصر")
+                if prayerList.index(prayer) == 5 :
+                    self.nextPrayer = "Ishaa"
+                    self.lblNextPrayer.setText(u"العشاء")
+                    self.lblPrevPrayer.setText(u"المغرب")
+
+                break
+
     def closeEvent(self,event):
         try:
           if self.ensure_quit:
