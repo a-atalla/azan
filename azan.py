@@ -57,10 +57,7 @@ class Azan(QtGui.QMainWindow):
         self.txtAsr.setText(settingsDialog.AsrTime)
         self.txtMaghrib.setText(settingsDialog.MaghribTime)
         self.txtIshaa.setText(settingsDialog.IshaTime)
-        self.nextPrayer()
         
-        
-       
     def displayTime(self):
         '''Display Time in the main window ,and play sound when the time is equal of any pray
         '''
@@ -350,7 +347,8 @@ class Azan(QtGui.QMainWindow):
                     self.lblNextPrayer.setText(u"العشاء")
                     self.lblPrevPrayer.setText(u"المغرب")
 
-                self.progressBar.setMaximum ( QtCore.QDateTime.fromString(prayerList[prayerIndex-1], "h:m:s A").secsTo(QtCore.QDateTime.fromString(prayer, "h:m:s A"))    )
+                self.progressBar.setMaximum ( QtCore.QTime.fromString(prayerList[prayerIndex-1], "h:m:s A").secsTo(QtCore.QTime.fromString(prayer, "h:m:s A"))    )
+                
                 print self.progressBar.maximum()
                 self.progressBar.setValue (Secs)
                 self.progressBar.setFormat(u" دقيقة " + str(Secs/60)  )
