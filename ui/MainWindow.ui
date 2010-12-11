@@ -300,20 +300,35 @@
         </item>
         <item>
          <widget class="QProgressBar" name="progressBar">
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
           <property name="value">
            <number>24</number>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="textDirection">
+           <enum>QProgressBar::BottomToTop</enum>
+          </property>
+          <property name="format">
+           <string/>
           </property>
          </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QLabel" name="lblPrevPrayer">
-            <property name="text">
-             <string>Prev Prayer</string>
+           <widget class="QLabel" name="lblNextPrayer">
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
             </property>
-            <property name="textFormat">
-             <enum>Qt::AutoText</enum>
+            <property name="locale">
+             <locale language="Arabic" country="Egypt"/>
+            </property>
+            <property name="text">
+             <string>Next Prayer</string>
             </property>
            </widget>
           </item>
@@ -331,15 +346,12 @@
            </spacer>
           </item>
           <item>
-           <widget class="QLabel" name="lblNextPrayer">
-            <property name="layoutDirection">
-             <enum>Qt::RightToLeft</enum>
-            </property>
-            <property name="locale">
-             <locale language="Arabic" country="Egypt"/>
-            </property>
+           <widget class="QLabel" name="lblPrevPrayer">
             <property name="text">
-             <string>Next Prayer</string>
+             <string>Prev Prayer</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::AutoText</enum>
             </property>
            </widget>
           </item>

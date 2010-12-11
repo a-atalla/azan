@@ -242,6 +242,7 @@ class SettingsDialog(QtGui.QDialog):
         year= int(QtCore.QDateTime.currentDateTime().toString("yyyy"))
         month=int(QtCore.QDateTime.currentDateTime().toString("MM"))
         day=int(QtCore.QDateTime.currentDateTime().toString("dd"))
+        print "Today is " , day
         self.settings()
         for  i  in range (0, self.listCountries.count()):
             if self.listCountries.item(i).text() == self.country:

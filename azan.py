@@ -42,11 +42,9 @@ class Azan(QtGui.QMainWindow):
         
         self.center()
         self.TrayIcon()
-#        self.trayicon.showMessage(u"أنتبه", u"حان الآن موعداذان الفجر ", msecs= 2000)
         self.displayTime()
         self.refreshWindow()
         self.connections()  
-        self.nextPrayer()
 
     def refreshWindow(self):
         settingsDialog.calculate()
@@ -59,6 +57,7 @@ class Azan(QtGui.QMainWindow):
         self.txtAsr.setText(settingsDialog.AsrTime)
         self.txtMaghrib.setText(settingsDialog.MaghribTime)
         self.txtIshaa.setText(settingsDialog.IshaTime)
+        self.nextPrayer()
         
         
        
@@ -70,7 +69,7 @@ class Azan(QtGui.QMainWindow):
         nowDate =QtCore.QDate.currentDate().toString("ddd dd MMM yyyy")
         self.lblCurrentTime.setText(nowTime)
         self.lblCurrentDate.setText(nowDate)
-        
+    
         # Show Tray Message befor prayer with 5 min
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtFajr.text(), "h:m:s A"))  == 300 :
             self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الفجر 5 دقائق  ", msecs = 300000)
@@ -325,34 +324,61 @@ class Azan(QtGui.QMainWindow):
             nowTime=QtCore.QDateTime.currentDateTime().toString("h:m:s A")
             nowTime =QtCore.QDateTime.fromString(nowTime, "h:m:s A")       
             Secs=nowTime.secsTo(QtCore.QDateTime.fromString(prayer, "h:m:s A")) 
-            print Secs
+            prayerIndex = prayerList.index(prayer)
             if Secs > 0 :
-                if prayerList.index(prayer) == 0 :
+                if prayerIndex == 0 :
                     self.nextPrayer = "Fajr"
                     self.lblNextPrayer.setText(u"الفجر")
                     self.lblPrevPrayer.setText(u"العشاء")
-                if prayerList.index(prayer) == 1 :
+                if prayerIndex == 1 :
                     self.nextPrayer = "Shorouk"
                     self.lblPrevPrayer.setText(u"الشروق")
                     self.lblPrevPrayer.setText(u"الفجر")
-                if prayerList.index(prayer) == 2 :
+                if prayerIndex == 2 :
                     self.nextPrayer = "uZuhr"
                     self.lblNextPrayer.setText(u"الظهر")
                     self.lblPrevPrayer.setText(u"الشروق")
-                if prayerList.index(prayer) == 3 :
+                if prayerIndex == 3 :
                     self.nextPrayer = "Asr"
                     self.lblNextPrayer.setText(u"العصر")
                     self.lblPrevPrayer.setText(u"الظهر")
-                if prayerList.index(prayer) == 4 :
-                    self.nextPrayer = "Maghrib"
+                if prayerIndex == 4 :
                     self.lblNextPrayer.setText(u"المغرب")
                     self.lblPrevPrayer.setText(u"العصر")
-                if prayerList.index(prayer) == 5 :
+                if prayerIndex == 5 :
                     self.nextPrayer = "Ishaa"
                     self.lblNextPrayer.setText(u"العشاء")
                     self.lblPrevPrayer.setText(u"المغرب")
 
+                self.progressBar.setMaximum ( QtCore.QDateTime.fromString(prayerList[prayerIndex-1], "h:m:s A").secsTo(QtCore.QDateTime.fromString(prayer, "h:m:s A"))    )
+                print self.progressBar.maximum()
+                self.progressBar.setValue (Secs)
+                self.progressBar.setFormat(u" دقيقة " + str(Secs/60)  )
                 break
+                
+            
+            #If after Ishaa all the values will return negativ so we had to calculate next day fajr time
+            if  prayerList.index(prayer) == 5 :
+                self.nextPrayer = "Fajr"
+                self.lblNextPrayer.setText(u"الفجر")
+                self.lblPrevPrayer.setText(u"العشاء")
+                # calculate tommorow fajr
+                year= int(QtCore.QDateTime.currentDateTime().toString("yyyy"))
+                month=int(QtCore.QDateTime.currentDateTime().toString("MM"))
+                day=int(QtCore.QDateTime.currentDateTime().toString("dd"))
+                pt=Prayertime(settingsDialog.longitude, settingsDialog.latitude,settingsDialog.timeZone, year, month, day+1 ,settingsDialog.calendar, settingsDialog.mazhab, settingsDialog.season)
+                pt.calculate()
+                print  QtCore.QTime.fromString(pt.fajr_time(), "h:m:s A")
+                
+                #Secs = seconds from now until fajr tommorow
+                print pt.fajr_time()
+                Secs=QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(pt.fajr_time(), "h:m:s A"))
+                Secs = (24 * 3600) + Secs
+                print Secs
+                self.progressBar.setMaximum ( (QtCore.QTime.fromString(prayer, "h:m:s A").secsTo(QtCore.QTime.fromString(pt.fajr_time(), "h:m:s A")) ) + (3600*24)  )
+                self.progressBar.setValue (Secs)
+                self.progressBar.setFormat(u" دقيقة " + str(Secs/60)  )
+                
 
     def closeEvent(self,event):
         try:
