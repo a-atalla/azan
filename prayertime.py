@@ -32,6 +32,7 @@ from time import strptime
 
 def remove_duplication(var):
     ##BETTER WAY?
+    #there is a better way, just using var % 360 !
     if var > 360:
         var /= 360   
         var -= int(var) 
@@ -51,6 +52,10 @@ class Calendar(object):
 class Mazhab(object):
     Default, Hanafi = 0, 1
 
+def fill_zeros(time):
+  fill = lambda var: [var, '0'+var] [len(var) <2]
+  return ':'.join(map(fill, time.split(':')))
+    
 def to_hrtime(var, isAM=False):
     
     """var: double -> human readable string of format "%I:%M:%S %p" """
@@ -89,7 +94,7 @@ def to_hrtime(var, isAM=False):
         
     time += zone
         
-    return time
+    return fill_zeros(time)
 
 def as_pytime(string_to_parse, fmt="%I:%M:%SS %p"):
     """returns time.tm_struct by parsing string_to_parse."""

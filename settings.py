@@ -25,7 +25,7 @@ class SettingsDialog(QtGui.QDialog):
         self.db.setDatabaseName('database/CountriesDB')
         self.db.open()
         self.query=QtSql.QSqlQuery()
-        self.query.exec_('SELECT countryName FROM countriesTable')
+        self.query.exec_('SELECT countryName FROM countriesTable order by countryName asc')
         while self.query.next():
             country = self.query.value(0).toString()   
             self.listCountries.addItem(country)

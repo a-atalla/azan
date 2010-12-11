@@ -1,10 +1,11 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 import sys
 from PyQt4 import QtGui, QtCore, QtSvg, uic
 from PyQt4.phonon import Phonon
 import images
 from settings import *
 from azkar import *
+from prayertime import to_hrtime
 
 class Azan(QtGui.QMainWindow):
     def __init__(self):
@@ -314,6 +315,8 @@ class Azan(QtGui.QMainWindow):
         qibla = QtCore.QByteArray(simple_qibla_xml)
         self.svgwidget.load(qibla)
         
+    def secs_to_hrtime(self, secs):
+      return to_hrtime(secs/3600)[:-3]
     
     def nextPrayer(self):
         prayerList = [str(self.txtFajr.text()) ,  str(self.txtShrouk.text()) , str(self.txtZuhr.text()), str(self.txtAsr.text()), str(self.txtMaghrib.text()) ,  str(self.txtIshaa.text())]
@@ -331,10 +334,7 @@ class Azan(QtGui.QMainWindow):
                     timeBetweenPrayers = (24 * 3600 ) - timeBetweenPrayers
                     self.progressBar.setMaximum (timeBetweenPrayers)
                     self.progressBar.setValue (timeBetweenPrayers -  secsToNextPrayer)
-                    if (secsToNextPrayer /3600) > 1:
-                        self.progressBar.setFormat ( u" ساعة " + str(round ((secsToNextPrayer/3600), 2)))
-                    else :
-                        self.progressBar.setFormat ( u" دقيقة " + str(round ((secsToNextPrayer/60), 2)))
+                    self.progressBar.setFormat(u'الوقت حتي صلاة '+ self.lblNextPrayer.text() + ' ' + self.secs_to_hrtime(secsToNextPrayer))
                     
                 if prayerIndex == 1 :
                     self.lblNextPrayer.setText(u"الشروق")
@@ -357,10 +357,8 @@ class Azan(QtGui.QMainWindow):
                     timeBetweenPrayers = float  (QtCore.QTime.fromString(prayerList[prayerIndex-1], "h:m:s A").secsTo(QtCore.QTime.fromString(prayerList[prayerIndex], "h:m:s A")))
                     self.progressBar.setMaximum (timeBetweenPrayers)
                     self.progressBar.setValue (timeBetweenPrayers -  secsToNextPrayer)
-                    if (secsToNextPrayer /3600) > 1:
-                        self.progressBar.setFormat ( u" ساعة " + str(round ((secsToNextPrayer/3600), 2)))
-                    else :
-                        self.progressBar.setFormat ( u" دقيقة " + str(round ((secsToNextPrayer/60), 2)))
+                    self.progressBar.setFormat(u'الوقت حتي صلاة '+ self.lblNextPrayer.text() + ' ' + self.secs_to_hrtime(secsToNextPrayer))
+		    
                 break
             #If after Ishaa all the values will return negativ so we had to calculate next day fajr time
             else :
@@ -373,11 +371,8 @@ class Azan(QtGui.QMainWindow):
             
                     self.progressBar.setMaximum (timeBetweenPrayers)
                     self.progressBar.setValue (timeBetweenPrayers -  secsToNextPrayer)
-                    if (secsToNextPrayer /3600) > 1:
-                        self.progressBar.setFormat ( u" ساعة " + str(round ((secsToNextPrayer/3600), 2)))
-                    else :
-                        self.progressBar.setFormat ( u" دقيقة " + str(round ((secsToNextPrayer/60), 2)))
-            
+                    self.progressBar.setFormat(u'الوقت حتي صلاة '+ self.lblNextPrayer.text() + ' ' + self.secs_to_hrtime(secsToNextPrayer))
+                    
     def closeEvent(self,event):
         try:
           if self.ensure_quit:
