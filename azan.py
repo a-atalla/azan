@@ -66,7 +66,10 @@ class Azan(QtGui.QMainWindow):
         nowDate =QtCore.QDate.currentDate().toString("ddd dd MMM yyyy")
         self.lblCurrentTime.setText(nowTime)
         self.lblCurrentDate.setText(nowDate)
-    
+        
+        #Calculate for the new day at 00:00:01
+        if str(nowTime) == "12:0:0 AM":
+            self.refreshWindow()
         # Show Tray Message befor prayer with 5 min
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtFajr.text(), "h:m:s A"))  == 300 :
             self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الفجر 5 دقائق  ", msecs = 300000)
@@ -325,11 +328,9 @@ class Azan(QtGui.QMainWindow):
             secsToNextPrayer =float  (QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(prayer, "h:m:s A")))
             if secsToNextPrayer > 0 :
                 if prayerIndex == 0 :
-                    print "next is Fajr"
                     self.lblNextPrayer.setText(u"الفجر")
                     self.lblPrevPrayer.setText(u"العشاء")
                     
-                    print secsToNextPrayer/3600                    
                     timeBetweenPrayers =   (QtCore.QTime.fromString(prayerList[0] , "h:m:s A").secsTo(QtCore.QTime.fromString(prayerList[5] , "h:m:s A")))
                     timeBetweenPrayers = (24 * 3600 ) - timeBetweenPrayers
                     self.progressBar.setMaximum (timeBetweenPrayers)
