@@ -3,11 +3,17 @@ import os
 import sys
 from prayertime import *
 from PyQt4 import QtGui, QtCore, QtSql, uic
+from urllib import urlopen
+from mapWidget import *
 
 class SettingsDialog(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         uic.loadUi("ui/SettingsDialog.ui", self)
+        
+        global mapWidget
+        mapWidget = MapWidget()
+        
         self.cboxStyle.addItems(QtGui.QStyleFactory.keys())
         self.center()
         self.connections()
@@ -264,13 +270,23 @@ class SettingsDialog(QtGui.QDialog):
     def qibla_direction(self):
       return self.qibla
     
-        
+    def showMap(self):
+        try:
+	  urlopen('http://www.google.com')
+	except:
+	  QtGui.QMessageBox.critical(self, u'خطأ', u'تأكد من الإتصال بالانترنت و حاول مرة أخري')
+	else:
+	  mapWidget.setWindowFlags(QtCore.Qt.Dialog)
+	  mapWidget.webView.reload()
+	  mapWidget.clearAll()
+	  mapWidget.show()
+	  
     def connections(self):
         self.connect(self.listCountries,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.getcity)
         self.connect(self.listCities,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.cityCoordinates)
         self.connect(self.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.saveSettings)
         self.connect(self.listCountries, QtCore.SIGNAL("currentItemChanged(QListWidgetItem*,QListWidgetItem*)"), self.getcity)
-
+        self.connect(self.btnAddNew, QtCore.SIGNAL('clicked()'), self.showMap)
 
 def main():
     settingsDialog=settingsDialog()

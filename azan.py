@@ -62,24 +62,24 @@ class Azan(QtGui.QMainWindow):
         '''Display Time in the main window ,and play sound when the time is equal of any pray
         '''
         global nowTime, nowDate
-        nowTime =QtCore.QTime.currentTime().toString("h:m:s A")
+        nowTime =QtCore.QTime.currentTime().toString("hh:mm:ss A")
         nowDate =QtCore.QDate.currentDate().toString("ddd dd MMM yyyy")
         self.lblCurrentTime.setText(nowTime)
         self.lblCurrentDate.setText(nowDate)
-        
+
         #Calculate for the new day at 00:00:01
-        if str(nowTime) == "12:0:0 AM":
+        if str(nowTime) == "12:00:00 AM":
             self.refreshWindow()
         # Show Tray Message befor prayer with 5 min
-        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtFajr.text(), "h:m:s A"))  == 300 :
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtFajr.text(), "hh:mm:ss A"))  == 300 :
             self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الفجر 5 دقائق  ", msecs = 300000)
-        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtZuhr.text(), "h:m:s A"))  == 300 :
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtZuhr.text(), "hh:mm:ss A"))  == 300 :
             self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الظهر 5 دقائق", msecs = 300000)
-        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtAsr.text(), "h:m:s A"))  == 300 :
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtAsr.text(), "hh:mm:ss A"))  == 300 :
             self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العصر 5 دقائق ", msecs = 300000)
-        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtMaghrib.text(), "h:m:s A"))  == 300 :
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtMaghrib.text(), "hh:mm:ss A"))  == 300 :
             self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة المغرب 5 دقائق ", msecs = 300000)
-        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtIshaa.text(), "h:m:s A"))  == 300 :
+        if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtIshaa.text(), "hh:mm:ss A"))  == 300 :
             self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العشاء 5 دقائق  ", msecs = 300000)
             
             
@@ -282,6 +282,7 @@ class Azan(QtGui.QMainWindow):
    inkscape:export-ydpi="90">
 
 
+
 <circle cx="200" cy="200" r="195" 
    style="stroke: brown; fill: none;stroke-width: 10"/>
 
@@ -293,12 +294,17 @@ class Azan(QtGui.QMainWindow):
       style="stroke-width: 10; stroke: blue;"/>
     <polygon points="380  200, 375  195, 375  205"
       style="stroke-width: 18; stroke: blue;"/>
+    <!-- center of rotation -->
+    <circle cx="200" cy="200" r="15" style="fill: black;"/>
+    <!--<text x="130" y="180" style="font-weight:bold;font-size: 20;fill: blue;">Qibla Direction</text>-->
 </g>
 
-<!-- center of rotation -->
-<circle cx="200" cy="200" r="15" style="fill: black;"/>
+<text x="165" y="300" style="font-weight:bold;font-size: 30">%s°</text>
 
-<text x="190" y="300" style="font-weight:bold;font-size: 20">%s°</text>
+<text x="200" y="50" style="font-weight:bold;fill: brown;font-size: 30">N</text>
+<text x="200" y="370" style="font-weight:bold;fill: brown;font-size: 30">S</text>
+<text x="350" y="200" style="font-weight:bold;fill: brown;font-size: 30">E</text>
+<text x="30" y="200" style="font-weight:bold;fill: brown;font-size: 30">W</text>
 
 </svg>''' %(degree,str(int((degree+90)*100)/100.0))
         return xml
@@ -325,13 +331,13 @@ class Azan(QtGui.QMainWindow):
         prayerList = [str(self.txtFajr.text()) ,  str(self.txtShrouk.text()) , str(self.txtZuhr.text()), str(self.txtAsr.text()), str(self.txtMaghrib.text()) ,  str(self.txtIshaa.text())]
         for prayer in prayerList:
             prayerIndex = prayerList.index(prayer)
-            secsToNextPrayer =float  (QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(prayer, "h:m:s A")))
+            secsToNextPrayer =float  (QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(prayer, "hh:mm:ss A")))
             if secsToNextPrayer > 0 :
                 if prayerIndex == 0 :
                     self.lblNextPrayer.setText(u"الفجر")
                     self.lblPrevPrayer.setText(u"العشاء")
                     
-                    timeBetweenPrayers =   (QtCore.QTime.fromString(prayerList[0] , "h:m:s A").secsTo(QtCore.QTime.fromString(prayerList[5] , "h:m:s A")))
+                    timeBetweenPrayers =   (QtCore.QTime.fromString(prayerList[0] , "hh:mm:ss A").secsTo(QtCore.QTime.fromString(prayerList[5] , "hh:mm:ss A")))
                     timeBetweenPrayers = (24 * 3600 ) - timeBetweenPrayers
                     self.progressBar.setMaximum (timeBetweenPrayers)
                     self.progressBar.setValue (timeBetweenPrayers -  secsToNextPrayer)
@@ -355,7 +361,7 @@ class Azan(QtGui.QMainWindow):
                 
                 
                 if prayerIndex <> 0:
-                    timeBetweenPrayers = float  (QtCore.QTime.fromString(prayerList[prayerIndex-1], "h:m:s A").secsTo(QtCore.QTime.fromString(prayerList[prayerIndex], "h:m:s A")))
+                    timeBetweenPrayers = float  (QtCore.QTime.fromString(prayerList[prayerIndex-1], "hh:mm:ss A").secsTo(QtCore.QTime.fromString(prayerList[prayerIndex], "hh:mm:ss A")))
                     self.progressBar.setMaximum (timeBetweenPrayers)
                     self.progressBar.setValue (timeBetweenPrayers -  secsToNextPrayer)
                     self.progressBar.setFormat(u'الوقت حتي صلاة '+ self.lblNextPrayer.text() + ' ' + self.secs_to_hrtime(secsToNextPrayer))
@@ -366,7 +372,7 @@ class Azan(QtGui.QMainWindow):
                 if  prayerList.index(prayer) == 5 :
                     self.lblNextPrayer.setText(u"الفجر")
                     self.lblPrevPrayer.setText(u"العشاء")
-                    timeBetweenPrayers =   (QtCore.QTime.fromString(prayerList[0] , "h:m:s A").secsTo(QtCore.QTime.fromString(prayerList[5] , "h:m:s A")))
+                    timeBetweenPrayers =   (QtCore.QTime.fromString(prayerList[0] , "hh:mm:ss A").secsTo(QtCore.QTime.fromString(prayerList[5] , "hh:mm:ss A")))
                     timeBetweenPrayers = (24 * 3600 ) - timeBetweenPrayers
                     secsToNextPrayer = timeBetweenPrayers + secsToNextPrayer
             

@@ -90,11 +90,12 @@ def to_hrtime(var, isAM=False):
     var *= 60
     sec = int(var)
     time += str(sec)
+    time = fill_zeros(time)
     time += " "
-        
+    
     time += zone
         
-    return fill_zeros(time)
+    return time
 
 def as_pytime(string_to_parse, fmt="%I:%M:%SS %p"):
     """returns time.tm_struct by parsing string_to_parse."""

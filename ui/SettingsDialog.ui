@@ -99,7 +99,7 @@ background-image: url(:/images/images/back.jpeg);
         </size>
        </property>
        <property name="elideMode">
-        <enum>Qt::ElideRight</enum>
+        <enum>Qt::ElideNone</enum>
        </property>
        <property name="documentMode">
         <bool>false</bool>
@@ -129,6 +129,43 @@ background-image: url(:/images/images/back.jpeg);
            </item>
            <item>
             <widget class="QListWidget" name="listCities"/>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_18">
+           <item>
+            <spacer name="horizontalSpacer_14">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
+             <property name="text">
+              <string>إضافة مدينة جديدة من الخريطة (يلزم إتصال بالانترنت).</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnAddNew">
+             <property name="text">
+              <string>إضافة</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
@@ -213,7 +250,7 @@ background-image: url(:/images/images/back.jpeg);
            <item>
             <widget class="QGroupBox" name="groupBox">
              <property name="layoutDirection">
-              <enum>Qt::LeftToRight</enum>
+              <enum>Qt::RightToLeft</enum>
              </property>
              <property name="title">
               <string>بيانات المدينة</string>
@@ -222,7 +259,11 @@ background-image: url(:/images/images/back.jpeg);
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <item>
-                 <widget class="QLineEdit" name="txtLongitude"/>
+                 <widget class="QLabel" name="label">
+                  <property name="text">
+                   <string>خط الطول</string>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <spacer name="horizontalSpacer">
@@ -238,18 +279,18 @@ background-image: url(:/images/images/back.jpeg);
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label">
-                  <property name="text">
-                   <string>خط الطول</string>
-                  </property>
-                 </widget>
+                 <widget class="QLineEdit" name="txtLongitude"/>
                 </item>
                </layout>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout">
                 <item>
-                 <widget class="QLineEdit" name="txtLatitude"/>
+                 <widget class="QLabel" name="label_2">
+                  <property name="text">
+                   <string>خط العرض</string>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <spacer name="horizontalSpacer_2">
@@ -265,25 +306,21 @@ background-image: url(:/images/images/back.jpeg);
                  </spacer>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_2">
-                  <property name="text">
-                   <string>خط العرض</string>
-                  </property>
-                 </widget>
+                 <widget class="QLineEdit" name="txtLatitude"/>
                 </item>
                </layout>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_4">
                 <item>
-                 <widget class="QLineEdit" name="txtTimeZone"/>
-                </item>
-                <item>
                  <widget class="QLabel" name="label_3">
                   <property name="text">
                    <string>فرق التوقيت عن جرينتش</string>
                   </property>
                  </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="txtTimeZone"/>
                 </item>
                </layout>
               </item>

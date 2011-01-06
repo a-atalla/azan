@@ -19,21 +19,30 @@
    inkscape:export-filename="/home/romanov/cadr.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
-<!-- center of rotation -->
+
 
 
 <circle cx="200" cy="200" r="195" 
    style="stroke: brown; fill: none;stroke-width: 10"/>
 
-<!-- non-rotated arrow -->
+<!-- rotated arrow -->
 <g id="arrow" style="stroke: black;" transform="rotate(%f, 200, 200)">
+    <line x1="200" y1="200" x2="20" y2="200"
+      style="stroke-width: 10; stroke: blue;"/>
     <line x1="200" y1="200" x2="380" y2="200"
       style="stroke-width: 10; stroke: blue;"/>
     <polygon points="380  200, 375  195, 375  205"
       style="stroke-width: 18; stroke: blue;"/>
+    <!-- center of rotation -->
+    <circle cx="200" cy="200" r="15" style="fill: black;"/>
+    <!--<text x="130" y="180" style="font-weight:bold;font-size: 20;fill: blue;">Qibla Direction</text>-->
 </g>
-<circle cx="200" cy="200" r="15" style="fill: black;"/>
 
-<text x="190" y="300" style="font-weight:bold;font-size: 20">%s°</text>
+<text x="165" y="300" style="font-weight:bold;font-size: 30">%s°</text>
+
+<text x="200" y="50" style="font-weight:bold;fill: brown;font-size: 30">N</text>
+<text x="200" y="370" style="font-weight:bold;fill: brown;font-size: 30">S</text>
+<text x="350" y="200" style="font-weight:bold;fill: brown;font-size: 30">E</text>
+<text x="30" y="200" style="font-weight:bold;fill: brown;font-size: 30">W</text>
 
 </svg>
