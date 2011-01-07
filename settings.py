@@ -266,29 +266,6 @@ class SettingsDialog(QtGui.QDialog):
         self.MaghribTime=pt.maghrib_time()
         self.IshaTime=pt.isha_time()
         
-    def calculate4Month(self):
-        year= int(QtCore.QDateTime.currentDateTime().toString("yyyy"))
-        month=int(QtCore.QDateTime.currentDateTime().toString("MM"))
-        day = 1
-        while day < 31 :
-            #calculate the prayertimes for the day
-            self.settings()
-            for  i  in range (0, self.listCountries.count()):
-                if self.listCountries.item(i).text() == self.country:
-                    self.listCountries.setCurrentRow(i)
-            for  i  in range (0, self.listCities.count()):
-                if self.listCities.item(i).text() == self.city:
-                    self.listCities.setCurrentRow(i)
-            pt=Prayertime(self.longitude, self.latitude,self.timeZone, year, month, day ,self.calendar, self.mazhab, self.season)
-            pt.calculate()
-            self.qibla = pt.get_qibla()
-            print "Day  ", day , "  Fajr: ", pt.fajr_time()
-            print "Day  ", day , "  Shrouk: ",  pt.shrouk_time()
-            print "Day  ", day , "  Zuhr: ",pt.zuhr_time()
-            print "Day  ", day , "  Asr: ",pt.asr_time()
-            print "Day  ", day , "  Maghrib: ",pt.maghrib_time()
-            print "Day  ", day , "  Ishaa: ",pt.isha_time()
-            day = day +1
             
     def qibla_direction(self):
       return self.qibla
@@ -309,16 +286,12 @@ class SettingsDialog(QtGui.QDialog):
         self.connect(self.listCities,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.cityCoordinates)
         self.connect(self.btnSaveSettings, QtCore.SIGNAL('clicked()'), self.saveSettings)
         self.connect(self.listCountries, QtCore.SIGNAL("currentItemChanged(QListWidgetItem*,QListWidgetItem*)"), self.getcity)
-<<<<<<< local
-=======
-        self.connect(self.btnAddNew, QtCore.SIGNAL('clicked()'), self.showMap)
->>>>>>> other
 
-<<<<<<< local
-=======
+        self.connect(self.btnAddNew, QtCore.SIGNAL('clicked()'), self.showMap)
+
 def main():
     settingsDialog=settingsDialog()
     settingsDialog.database()
 if __name__ == "__main__":
     main()
->>>>>>> other
+

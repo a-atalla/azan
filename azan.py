@@ -157,7 +157,7 @@ class Azan(QtGui.QMainWindow):
     def connections(self):
         self.connect(self.btnSettings, QtCore.SIGNAL('clicked()'), self.showSettings)
         self.connect(self.timer,QtCore.SIGNAL("timeout()"), self.displayTime)
-        self.connect(self.btnMonthReport, QtCore.SIGNAL('clicked()'), reportDialog.setRows)
+        self.connect(self.btnMonthReport, QtCore.SIGNAL('clicked()'), reportDialog.fillReport)
         self.connect(self.actionShow, QtCore.SIGNAL('triggered()'), self.show)
         self.connect(self.actionClose, QtCore.SIGNAL('triggered()'), self.quit_app)
         self.connect(self.actionStopAzan, QtCore.SIGNAL('triggered()'), self.stopAzan)
@@ -403,7 +403,7 @@ class ReportDialog(QtGui.QDialog):
         QtGui.QMainWindow.__init__(self)
         uic.loadUi("ui/ReportDialog.ui", self)
         
-    def setRows(self):
+    def fillReport(self):
         year= int(QtCore.QDate.currentDate().toString("yyyy"))
         month=int(QtCore.QDate.currentDate().toString("MM"))
         Month = QtCore.QDate.currentDate().toString("MMMM")
