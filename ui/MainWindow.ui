@@ -377,12 +377,12 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
       <item>
-       <widget class="QPushButton" name="btnHide">
+       <widget class="QPushButton" name="btnMonthReport">
         <property name="font">
          <font/>
         </property>
         <property name="text">
-         <string>إخفاء</string>
+         <string>مواقيت الشهر</string>
         </property>
        </widget>
       </item>

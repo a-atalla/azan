@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE Project SYSTEM "Project-4.6.dtd">
 <!-- eric4 project file for project Azan -->
-<!-- Saved: 2010-11-24, 11:47:55 -->
-<!-- Copyright (C) 2010 ,  -->
+<!-- Saved: 2011-01-07, 20:17:43 -->
+<!-- Copyright (C) 2011 ,  -->
 <Project version="4.6">
   <Language>en</Language>
   <ProgLanguage mixed="0">Python</ProgLanguage>
@@ -17,11 +17,14 @@
     <Source>azkar.py</Source>
     <Source>main.py</Source>
     <Source>settings.py</Source>
+    <Source>mapWidget.py</Source>
   </Sources>
   <Forms>
     <Form>ui/MainWindow.ui</Form>
     <Form>ui/SettingsDialog.ui</Form>
     <Form>ui/PopupWindow.ui</Form>
+    <Form>ui/MapWidget.ui</Form>
+    <Form>ui/ReportDialog.ui</Form>
   </Forms>
   <Translations>
   </Translations>

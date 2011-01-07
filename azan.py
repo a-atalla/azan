@@ -19,9 +19,13 @@ class Azan(QtGui.QMainWindow):
         settingsDialog.getcity()
         settingsDialog.settings()
         settingsDialog.cityCoordinates()
-            
+        
         global azkar
         azkar = PopupWindow() 
+        
+        global reportDialog
+        reportDialog = ReportDialog()
+        
         
         self.changeStyle(settingsDialog.selectedStyle)
         self.audioOutput = Phonon.AudioOutput(Phonon.MusicCategory, self)
@@ -72,15 +76,15 @@ class Azan(QtGui.QMainWindow):
             self.refreshWindow()
         # Show Tray Message befor prayer with 5 min
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtFajr.text(), "hh:mm:ss A"))  == 300 :
-            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الفجر 5 دقائق  ", msecs = 300000)
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الفجر أقل من ", msecs = 300000)
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtZuhr.text(), "hh:mm:ss A"))  == 300 :
-            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الظهر 5 دقائق", msecs = 300000)
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الظهر أقل من  5 دقائق", msecs = 300000)
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtAsr.text(), "hh:mm:ss A"))  == 300 :
-            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العصر 5 دقائق ", msecs = 300000)
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العصرأقل من  5 دقائق ", msecs = 300000)
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtMaghrib.text(), "hh:mm:ss A"))  == 300 :
-            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة المغرب 5 دقائق ", msecs = 300000)
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة المغربأقل من  5 دقائق ", msecs = 300000)
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtIshaa.text(), "hh:mm:ss A"))  == 300 :
-            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العشاء 5 دقائق  ", msecs = 300000)
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العشاءأقل من  5 دقائق  ", msecs = 300000)
             
             
         
@@ -153,7 +157,7 @@ class Azan(QtGui.QMainWindow):
     def connections(self):
         self.connect(self.btnSettings, QtCore.SIGNAL('clicked()'), self.showSettings)
         self.connect(self.timer,QtCore.SIGNAL("timeout()"), self.displayTime)
-        self.connect(self.btnHide, QtCore.SIGNAL('clicked()'), self.hide)
+        self.connect(self.btnMonthReport, QtCore.SIGNAL('clicked()'), reportDialog.setRows)
         self.connect(self.actionShow, QtCore.SIGNAL('triggered()'), self.show)
         self.connect(self.actionClose, QtCore.SIGNAL('triggered()'), self.quit_app)
         self.connect(self.actionStopAzan, QtCore.SIGNAL('triggered()'), self.stopAzan)
@@ -392,3 +396,54 @@ class Azan(QtGui.QMainWindow):
 	    self.hide()
             event.ignore()
    
+
+
+class ReportDialog(QtGui.QDialog):
+    def __init__(self):
+        QtGui.QMainWindow.__init__(self)
+        uic.loadUi("ui/ReportDialog.ui", self)
+        
+    def setRows(self):
+        year= int(QtCore.QDate.currentDate().toString("yyyy"))
+        month=int(QtCore.QDate.currentDate().toString("MM"))
+        Month = QtCore.QDate.currentDate().toString("MMMM")
+        daysofmonth = QtCore.QDate.currentDate().daysInMonth()
+        self.labelCity.setText(settingsDialog.city)
+        self.labelMonth.setText(Month)
+        
+        day = 0
+        while day < daysofmonth :
+            #calculate the prayertimes for the day
+            settingsDialog.settings()
+            for  i  in range (0, settingsDialog.listCountries.count()):
+                if settingsDialog.listCountries.item(i).text() == settingsDialog.country:
+                    settingsDialog.listCountries.setCurrentRow(i)
+            for  i  in range (0, settingsDialog.listCities.count()):
+                if settingsDialog.listCities.item(i).text() == settingsDialog.city:
+                    settingsDialog.listCities.setCurrentRow(i)
+            pt=Prayertime(settingsDialog.longitude, settingsDialog.latitude,settingsDialog.timeZone, year, month, day+1 ,settingsDialog.calendar, settingsDialog.mazhab, settingsDialog.season)
+            pt.calculate()
+            self.tableWidget.setRowCount(daysofmonth)
+            
+            itemFajr = QtGui.QTableWidgetItem(pt.fajr_time())
+            itemShrouk = QtGui.QTableWidgetItem(pt.shrouk_time())
+            itemZuhr = QtGui.QTableWidgetItem(pt.zuhr_time())
+            itemAsr = QtGui.QTableWidgetItem(pt.asr_time())
+            itemMaghrib = QtGui.QTableWidgetItem(pt.maghrib_time())
+            itemIshaa = QtGui.QTableWidgetItem(pt.isha_time())
+            
+            self.tableWidget.setItem(day, 0, itemFajr)
+            self.tableWidget.setItem(day, 1, itemShrouk)
+            self.tableWidget.setItem(day, 2, itemZuhr)
+            self.tableWidget.setItem(day, 3, itemAsr)
+            self.tableWidget.setItem(day, 4, itemMaghrib) 
+            self.tableWidget.setItem(day, 5, itemIshaa)
+            
+            
+            day = day +1
+        
+        
+        self.show()
+        
+        
+        
