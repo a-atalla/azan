@@ -37,13 +37,21 @@
       newIcon.image = icon;
       newIcon.iconSize = new GSize(20, 20);
       newIcon.shadowSize = new GSize(22, 20);
-      newIcon.iconAnchor = new GPoint(6, 20);
+      newIcon.iconAnchor = new GPoint(6, 6);
 
       var point = new GLatLng(lat,lon);
       var marker = new GMarker( point, { icon: newIcon} ); 
       map.addOverlay(marker);
     }
-    
+
+    function addKabaCLine(lat, lon) {
+      var polyline = new GPolyline([
+        new GLatLng(21.423333, 39.823333),
+        new GLatLng(lat, lon)
+      ], "#0000FF", 5);
+      map.addOverlay(polyline);
+    }
+
     function getAddress(overlay, latlng) {
       if (latlng != null) {
         address = latlng;
@@ -70,6 +78,7 @@
         //'<b>Accuracy:</b>' + place.AddressDetails.Accuracy + '<br>' +
         //'<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);
         setSelectedData();
+        addKabaCLine(place.Point.coordinates[1], place.Point.coordinates[0])
       }
       
     }
@@ -102,6 +111,7 @@
         //marker.openInfoWindowHtml(place.address + '<br>' +
         //  '<b>Country code:</b> ' + place.AddressDetails.Country.CountryNameCode);
         setSelectedData();
+        addKabaCLine(place.Point.coordinates[1], place.Point.coordinates[0])
       }
     }
 
