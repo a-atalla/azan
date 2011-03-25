@@ -11,8 +11,8 @@ class SettingsDialog(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         uic.loadUi("ui/SettingsDialog.ui", self)
         
-        global mapWidget
-        mapWidget = MapWidget()
+#        global mapWidget
+#        mapWidget = MapWidget()
         
         self.cboxStyle.addItems(QtGui.QStyleFactory.keys())
         self.center()

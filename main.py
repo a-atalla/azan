@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+#!/usr/bin/python
 from azan import *
 def main():
     app=QtGui.QApplication(sys.argv)

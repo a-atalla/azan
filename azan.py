@@ -26,7 +26,6 @@ class Azan(QtGui.QMainWindow):
         global reportDialog
         reportDialog = ReportDialog()
         
-        
         self.changeStyle(settingsDialog.selectedStyle)
         self.audioOutput = Phonon.AudioOutput(Phonon.MusicCategory, self)
         self.mediaObject = Phonon.MediaObject(self)
@@ -70,6 +69,7 @@ class Azan(QtGui.QMainWindow):
         nowDate =QtCore.QDate.currentDate().toString("ddd dd MMM yyyy")
         self.lblCurrentTime.setText(nowTime)
         self.lblCurrentDate.setText(nowDate)
+        self.nextPrayer()
 
         #Calculate for the new day at 00:00:01
         if str(nowTime) == "12:00:00 AM":
@@ -80,11 +80,11 @@ class Azan(QtGui.QMainWindow):
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtZuhr.text(), "hh:mm:ss A"))  == 300 :
             self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة الظهر أقل من  5 دقائق", msecs = 300000)
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtAsr.text(), "hh:mm:ss A"))  == 300 :
-            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العصرأقل من  5 دقائق ", msecs = 300000)
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العصر أقل من  5 دقائق ", msecs = 300000)
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtMaghrib.text(), "hh:mm:ss A"))  == 300 :
-            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة المغربأقل من  5 دقائق ", msecs = 300000)
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة المغرب أقل من  5 دقائق ", msecs = 300000)
         if  QtCore.QTime.currentTime().secsTo(QtCore.QTime.fromString(self.txtIshaa.text(), "hh:mm:ss A"))  == 300 :
-            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العشاءأقل من  5 دقائق  ", msecs = 300000)
+            self.trayicon.showMessage(u"إستعد ", u" بقي علي صلاة العشاء أقل من  5 دقائق  ", msecs = 300000)
             
             
         
@@ -109,8 +109,7 @@ class Azan(QtGui.QMainWindow):
         if  str(nowTime) == self.txtIshaa.text():
             self.trayicon.showMessage(u"إنتبه", u"حان الآن موعد أذان العشاء", msecs = 200000)
             self.playAzan()
-        
-        self.nextPrayer()
+
     def center(self):
         screen = QtGui.QDesktopWidget().screenGeometry()
         size =  self.geometry()
@@ -397,23 +396,71 @@ class Azan(QtGui.QMainWindow):
             event.ignore()
    
 
-
 class ReportDialog(QtGui.QDialog):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         uic.loadUi("ui/ReportDialog.ui", self)
-        
     def fillReport(self):
-        year= int(QtCore.QDate.currentDate().toString("yyyy"))
-        month=int(QtCore.QDate.currentDate().toString("MM"))
+        year= QtCore.QDate.currentDate().toString("yyyy")
         Month = QtCore.QDate.currentDate().toString("MMMM")
+        month=int(QtCore.QDate.currentDate().toString("MM"))
         daysofmonth = QtCore.QDate.currentDate().daysInMonth()
-        self.labelCity.setText(settingsDialog.city)
-        self.labelMonth.setText(Month)
         
-        day = 0
+        self.editReport.clear()
+        cursor=self.editReport.textCursor()
+        
+        #Set the different formats
+        centerBlockFormat = QtGui.QTextBlockFormat()
+        centerBlockFormat.setAlignment(QtCore.Qt.AlignHCenter)
+        cursor.setBlockFormat(centerBlockFormat)
+        format = cursor.charFormat()
+        format.setFontPointSize(16)
+        boldFormat = QtGui.QTextCharFormat(format)
+        boldFormat.setFontWeight(QtGui.QFont.Bold)
+        
+        #Report Header
+        cursor.insertText(u"بسم الله الرحمن الرحيم", boldFormat);
+        cursor.insertBlock()
+        cursor.insertText(u"( إِنَّ الصَّلاَةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا) ")
+        cursor.insertBlock()
+        cursor.insertText(Month + "  " + year)    # Need Hijri Date Here
+        cursor.insertBlock()
+        ###############################################################
+        tableFormat = QtGui.QTextTableFormat()
+        tableFormat.setAlignment(QtCore.Qt.AlignHCenter)
+        tableFormat.setBackground(QtGui.QColor("#e0e0e0"))
+        tableFormat.setCellPadding(2)
+        tableFormat.setCellSpacing(4)
+        constraints = [QtGui.QTextLength(QtGui.QTextLength.PercentageLength, 14),
+                       QtGui.QTextLength(QtGui.QTextLength.PercentageLength, 14),
+                       QtGui.QTextLength(QtGui.QTextLength.PercentageLength, 14),
+                       QtGui.QTextLength(QtGui.QTextLength.PercentageLength, 14),
+                       QtGui.QTextLength(QtGui.QTextLength.PercentageLength, 14),
+                       QtGui.QTextLength(QtGui.QTextLength.PercentageLength, 14),
+                       QtGui.QTextLength(QtGui.QTextLength.PercentageLength, 14)]
+        tableFormat.setColumnWidthConstraints(constraints)
+        table = cursor.insertTable(1, 7, tableFormat)
+        frame = cursor.currentFrame()
+        frameFormat = frame.frameFormat()
+        frameFormat.setBorder(1)
+        frame.setFrameFormat(frameFormat)
+        format = cursor.charFormat()
+        format.setFontPointSize(10)
+        boldFormat = QtGui.QTextCharFormat(format)
+        boldFormat.setFontWeight(QtGui.QFont.Bold)
+        highlightedFormat = QtGui.QTextCharFormat(boldFormat)
+        highlightedFormat.setBackground(QtCore.Qt.yellow)
+        #Fill The table header
+        headerList = [u"اليوم", u"الفجر", u"الشروق", u"الظهر", u"العصر", u"المغرب", u"العشاء"]
+        for i in range(0, 7):
+            cell = table.cellAt(0, i)
+            cellCursor = cell.firstCursorPosition()
+            cellCursor.insertText(headerList[i], boldFormat)
+        table.insertRows(table.rows(), 1)
+        ###############################################################
+        #Calculate the month prayer time
+        day = 1
         while day < daysofmonth :
-            #calculate the prayertimes for the day
             settingsDialog.settings()
             for  i  in range (0, settingsDialog.listCountries.count()):
                 if settingsDialog.listCountries.item(i).text() == settingsDialog.country:
@@ -421,29 +468,20 @@ class ReportDialog(QtGui.QDialog):
             for  i  in range (0, settingsDialog.listCities.count()):
                 if settingsDialog.listCities.item(i).text() == settingsDialog.city:
                     settingsDialog.listCities.setCurrentRow(i)
-            pt=Prayertime(settingsDialog.longitude, settingsDialog.latitude,settingsDialog.timeZone, year, month, day+1 ,settingsDialog.calendar, settingsDialog.mazhab, settingsDialog.season)
+            pt=Prayertime(settingsDialog.longitude, settingsDialog.latitude,settingsDialog.timeZone, int(year), month, day+1 ,settingsDialog.calendar, settingsDialog.mazhab, settingsDialog.season)
             pt.calculate()
-            self.tableWidget.setRowCount(daysofmonth)
-            
-            itemFajr = QtGui.QTableWidgetItem(pt.fajr_time())
-            itemShrouk = QtGui.QTableWidgetItem(pt.shrouk_time())
-            itemZuhr = QtGui.QTableWidgetItem(pt.zuhr_time())
-            itemAsr = QtGui.QTableWidgetItem(pt.asr_time())
-            itemMaghrib = QtGui.QTableWidgetItem(pt.maghrib_time())
-            itemIshaa = QtGui.QTableWidgetItem(pt.isha_time())
-            
-            self.tableWidget.setItem(day, 0, itemFajr)
-            self.tableWidget.setItem(day, 1, itemShrouk)
-            self.tableWidget.setItem(day, 2, itemZuhr)
-            self.tableWidget.setItem(day, 3, itemAsr)
-            self.tableWidget.setItem(day, 4, itemMaghrib) 
-            self.tableWidget.setItem(day, 5, itemIshaa)
-            
-            
-            day = day +1
-        
-        
+ 
+            prayertimeList=(str(day)+"/"+str(month)+"/"+year, pt.fajr_time(), pt.shrouk_time(), pt.zuhr_time(), pt.asr_time(), pt.maghrib_time(), pt.isha_time())
+            # File PrayerTimes in the Table
+            for j in range(0, 7):
+                cell = table.cellAt(day, j)
+                cellCursor = cell.firstCursorPosition()
+                cellCursor.insertText(prayertimeList[j])
+            if day <> daysofmonth-1:
+                table.insertRows(table.rows(),1)
+            day=day+1
+
         self.show()
-        
-        
-        
+
+
+ 
