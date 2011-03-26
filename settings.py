@@ -7,12 +7,12 @@ from urllib import urlopen
 from mapWidget import *
 
 class SettingsDialog(QtGui.QDialog):
-    def __init__(self):
-        QtGui.QDialog.__init__(self)
+    def __init__(self,  parent = None):
+        QtGui.QDialog.__init__(self,  parent)
         uic.loadUi("ui/SettingsDialog.ui", self)
         
-#        global mapWidget
-#        mapWidget = MapWidget()
+        global mapWidget
+        mapWidget = MapWidget()
         
         self.cboxStyle.addItems(QtGui.QStyleFactory.keys())
         self.center()
@@ -47,7 +47,7 @@ class SettingsDialog(QtGui.QDialog):
         self.query.exec_('SELECT * FROM countriesTable WHERE countryName =' +"'"+CurrentCountry+"'")
         while self.query.next():
             countryNo = self.query.value(0).toString() 
-        self.query.exec_('SELECT cityName FROM citiesTable WHERE countryNO='+countryNo)
+        self.query.exec_('SELECT cityName FROM citiesTable WHERE countryNO='+countryNo+' order by cityName asc')
         while self.query.next():
             city= self.query.value(0).toString()   
             self.listCities.addItem(city)
@@ -272,15 +272,13 @@ class SettingsDialog(QtGui.QDialog):
     
     def showMap(self):
         try:
-	  urlopen('http://www.google.com')
-	except:
-	  QtGui.QMessageBox.critical(self, u'خطأ', u'تأكد من الإتصال بالانترنت و حاول مرة أخري')
-	else:
-	  mapWidget.setWindowFlags(QtCore.Qt.Dialog)
-	  mapWidget.webView.reload()
-	  mapWidget.clearAll()
-	  mapWidget.show()
-	  
+            urlopen('http://www.google.com')
+        except:
+            QtGui.QMessageBox.critical(self, u'خطأ', u'تأكد من الإتصال بالانترنت و حاول مرة أخري')
+        else:
+            mapWidget.clearAll()
+            mapWidget.show()
+
     def connections(self):
         self.connect(self.listCountries,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.getcity)
         self.connect(self.listCities,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"), self.cityCoordinates)

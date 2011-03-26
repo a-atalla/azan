@@ -23,8 +23,69 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboGMonths">
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioG">
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string>شهر ميلادي</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboHMonths">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="radioH">
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="text">
+        <string>شهر هجري:</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTextEdit" name="editReport">
+     <property name="cursor" stdset="0">
+      <cursorShape>ArrowCursor</cursorShape>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">
@@ -71,22 +132,28 @@
      </item>
     </layout>
    </item>
-   <item>
-    <widget class="QTextEdit" name="editReport">
-     <property name="cursor" stdset="0">
-      <cursorShape>ArrowCursor</cursorShape>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources>
   <include location="../images.qrc"/>
  </resources>
  <connections>
+  <connection>
+   <sender>radioG</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboHMonths</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>265</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>432</x>
+     <y>23</y>
+    </hint>
+   </hints>
+  </connection>
   <connection>
    <sender>btnPrint</sender>
    <signal>clicked()</signal>
@@ -100,6 +167,22 @@
     <hint type="destinationlabel">
      <x>451</x>
      <y>25</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioH</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboGMonths</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>598</x>
+     <y>22</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>99</x>
+     <y>23</y>
     </hint>
    </hints>
   </connection>

@@ -90,7 +90,7 @@ background-image: url(:/images/images/back.jpeg);
         <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="iconSize">
         <size>
@@ -288,7 +288,7 @@ background-image: url(:/images/images/back.jpeg);
                 <item>
                  <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>خط العرض</string>
+                   <string>دائرة العرض</string>
                   </property>
                  </widget>
                 </item>

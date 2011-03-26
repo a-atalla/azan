@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>614</width>
+    <width>622</width>
     <height>556</height>
    </rect>
   </property>
@@ -32,7 +32,7 @@
          <enum>Qt::RightToLeft</enum>
         </property>
         <property name="text">
-         <string>حدد موضع علي الخريطة ثم انقر علي إضافة:</string>
+         <string>حدد موضع و ادخل فروق التوقيت:</string>
         </property>
        </widget>
       </item>
@@ -51,15 +51,8 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0" colspan="6">
+   <item row="1" column="0" rowspan="3" colspan="2">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>العنوان:</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="1">
       <widget class="QLineEdit" name="txtAddress">
        <property name="readOnly">
@@ -118,7 +111,7 @@
      <item row="4" column="0">
       <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>خط العرض:</string>
+        <string>دائرة العرض:</string>
        </property>
       </widget>
      </item>
@@ -129,9 +122,69 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>العنوان:</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="2" rowspan="3">
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3" colspan="2">
+    <widget class="QLabel" name="label_7">
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>فرق التوقيت عن جرينتش:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5">
+    <widget class="QDoubleSpinBox" name="spinTimezone">
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="suffix">
+      <string> GMT</string>
+     </property>
+     <property name="decimals">
+      <number>2</number>
+     </property>
+     <property name="minimum">
+      <double>-9999.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3" colspan="2">
+    <widget class="QLabel" name="label_8">
+     <property name="text">
+      <string>توقيت صيفي:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="5">
+    <widget class="QDoubleSpinBox" name="spinDaylight">
+     <property name="layoutDirection">
+      <enum>Qt::LeftToRight</enum>
+     </property>
+     <property name="suffix">
+      <string> H</string>
+     </property>
+     <property name="minimum">
+      <double>-9999.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="5">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -144,31 +197,14 @@
      </property>
     </spacer>
    </item>
-   <item row="3" column="4">
-    <widget class="QPushButton" name="btnAdd">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>&amp;إضافة</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>490</width>
-       <height>24</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="3" column="0">
+   <item row="4" column="0">
     <widget class="QProgressBar" name="progressBar">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="value">
       <number>0</number>
      </property>
@@ -183,8 +219,37 @@
      </property>
     </widget>
    </item>
-   <item row="3" column="3">
+   <item row="4" column="1" colspan="2">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>503</width>
+       <height>24</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="5">
+    <widget class="QPushButton" name="btnAdd">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="text">
+      <string>&amp;إضافة</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4">
     <widget class="QPushButton" name="btnClose">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>إغلاق</string>
      </property>

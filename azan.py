@@ -6,12 +6,17 @@ import images
 from settings import *
 from azkar import *
 from prayertime import to_hrtime
+from Hijra.HijriCal import *
 
 class Azan(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         uic.loadUi("ui/MainWindow.ui", self)
-
+        ###
+        self.h_days = ['Ahd', 'Ith',  'Thu', 'Arb', 'Kha', 'Jum',  'Sab']
+        self.h_months = ['Muh',  'Saf', 'Rab-Awl',  'Rab-Than',  'Jum-Awl', 'Jum-Than', 'Raj',  'Sha',  'Ram',  'Sha',  'Dhu-Quida', 'Thu-Hjja']
+        self.cal = HijriCal()
+        
         global settingsDialog
         settingsDialog=SettingsDialog()
         settingsDialog.database()
@@ -66,9 +71,15 @@ class Azan(QtGui.QMainWindow):
         '''
         global nowTime, nowDate
         nowTime =QtCore.QTime.currentTime().toString("hh:mm:ss A")
-        nowDate =QtCore.QDate.currentDate().toString("ddd dd MMM yyyy")
+        nowDate =QtCore.QDate.currentDate()
         self.lblCurrentTime.setText(nowTime)
-        self.lblCurrentDate.setText(nowDate)
+        self.cal.goto_today()
+        g_date = nowDate.toString("ddd dd MMM yyyy")
+        h_year,  h_month,  h_day,  h_week_day = self.cal.today
+        h_date = '%s %i %s %i' % (self.h_days[h_week_day], h_day,  self.h_months[h_month-1],  h_year )
+        self.lblCurrentDate.setText('<font color=\'red\'>' + h_date + '</font>' + ' <font color=\'blue\'>' + g_date + '</font>')
+
+        self.lblCurrentTime.setText(nowTime)
         self.nextPrayer()
 
         #Calculate for the new day at 00:00:01
@@ -313,8 +324,8 @@ class Azan(QtGui.QMainWindow):
         return xml
      
     def quit_app(self):
-      self.ensure_quit = True
-      self.close()
+        self.ensure_quit = True
+        self.close()
     
     def svg_rotation_to_cardinal(self,degree):
       #top: north
@@ -328,7 +339,7 @@ class Azan(QtGui.QMainWindow):
         self.svgwidget.load(qibla)
         
     def secs_to_hrtime(self, secs):
-      return to_hrtime(secs/3600)[:-3]
+        return to_hrtime(secs/3600)[:-3]
     
     def nextPrayer(self):
         prayerList = [str(self.txtFajr.text()) ,  str(self.txtShrouk.text()) , str(self.txtZuhr.text()), str(self.txtAsr.text()), str(self.txtMaghrib.text()) ,  str(self.txtIshaa.text())]
@@ -349,6 +360,7 @@ class Azan(QtGui.QMainWindow):
                 if prayerIndex == 1 :
                     self.lblNextPrayer.setText(u"الشروق")
                     self.lblPrevPrayer.setText(u"الفجر")
+                    self.progressBar.setFormat(u'الوقت حتي صلاة '+ self.lblNextPrayer.text() + ' ' + self.secs_to_hrtime(secsToNextPrayer))
                 if prayerIndex == 2 :
                     self.lblNextPrayer.setText(u"الظهر")
                     self.lblPrevPrayer.setText(u"الشروق")
@@ -367,8 +379,8 @@ class Azan(QtGui.QMainWindow):
                     timeBetweenPrayers = float  (QtCore.QTime.fromString(prayerList[prayerIndex-1], "hh:mm:ss A").secsTo(QtCore.QTime.fromString(prayerList[prayerIndex], "hh:mm:ss A")))
                     self.progressBar.setMaximum (timeBetweenPrayers)
                     self.progressBar.setValue (timeBetweenPrayers -  secsToNextPrayer)
-                    self.progressBar.setFormat(u'الوقت حتي صلاة '+ self.lblNextPrayer.text() + ' ' + self.secs_to_hrtime(secsToNextPrayer))
-		    
+                    self.progressBar.setFormat(u'الوقت حتي '+ self.lblNextPrayer.text() + ' ' + self.secs_to_hrtime(secsToNextPrayer))
+    
                 break
             #If after Ishaa all the values will return negativ so we had to calculate next day fajr time
             else :
@@ -385,17 +397,17 @@ class Azan(QtGui.QMainWindow):
                     
     def closeEvent(self,event):
         try:
-          if self.ensure_quit:
-	    settingsDialog.db.close()
-            del  settingsDialog.db #avoiding db reomveDatabase warning
-            if settingsDialog.isVisible():
-                settingsDialog.close()
-            if reportDialog.isVisible():
-                reportDialog.close()
+            if self.ensure_quit:
+                settingsDialog.db.close()
+                del  settingsDialog.db #avoiding db reomveDatabase warning
+                if settingsDialog.isVisible():
+                    settingsDialog.close()
+                if reportDialog.isVisible():
+                    reportDialog.close()
                 
         except:
             #ensure_quit isn't defined so just hide
-	    self.hide()
+            self.hide()
             event.ignore()
    
 
@@ -403,10 +415,18 @@ class ReportDialog(QtGui.QDialog):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         uic.loadUi("ui/ReportDialog.ui", self)
+        self.comboGMonths.addItems([u'يناير', u'فبراير', u'مارس', u'أبريل', u'مايو', u'يونيو', u'يوليو', u'أغسطس', u'سبتمبر', u'أكتوبر', u'نوفمبر', u'ديسمبر']) 
+        self.comboHMonths.addItems([u'محرّم', u'صفر', u'ربيع الأول', u'ربيع الثاني', u'جمادى الأولى', u'جمادى الآخر', u'رجب ', u'شعبان', u'رمضان', u'شوال', u'ذو القعدة', u'ذو الحجة'])
+        self.cal = HijriCal()
+    #TODO: fillReport => hijri and gregorian
     def fillReport(self):
+        self.cal.goto_today()
+        hyear, hmonth,  hday,  hweekday = self.cal.today
         year= QtCore.QDate.currentDate().toString("yyyy")
         Month = QtCore.QDate.currentDate().toString("MMMM")
         month=int(QtCore.QDate.currentDate().toString("MM"))
+        self.comboGMonths.setCurrentIndex(month-1)
+        self.comboHMonths.setCurrentIndex(hmonth-1)
         daysofmonth = QtCore.QDate.currentDate().daysInMonth()
         
         self.editReport.clear()
@@ -455,6 +475,7 @@ class ReportDialog(QtGui.QDialog):
         highlightedFormat.setBackground(QtCore.Qt.yellow)
         #Fill The table header
         headerList = [u"اليوم", u"الفجر", u"الشروق", u"الظهر", u"العصر", u"المغرب", u"العشاء"]
+        headerList.reverse() #right to left
         for i in range(0, 7):
             cell = table.cellAt(0, i)
             cellCursor = cell.firstCursorPosition()
@@ -474,7 +495,8 @@ class ReportDialog(QtGui.QDialog):
             pt=Prayertime(settingsDialog.longitude, settingsDialog.latitude,settingsDialog.timeZone, int(year), month, day+1 ,settingsDialog.calendar, settingsDialog.mazhab, settingsDialog.season)
             pt.calculate()
  
-            prayertimeList=(str(day)+"/"+str(month)+"/"+year, pt.fajr_time(), pt.shrouk_time(), pt.zuhr_time(), pt.asr_time(), pt.maghrib_time(), pt.isha_time())
+            prayertimeList=[str(day)+"/"+str(month)+"/"+year, pt.fajr_time(), pt.shrouk_time(), pt.zuhr_time(), pt.asr_time(), pt.maghrib_time(), pt.isha_time()]
+            prayertimeList.reverse()
             # File PrayerTimes in the Table
             for j in range(0, 7):
                 cell = table.cellAt(day, j)
