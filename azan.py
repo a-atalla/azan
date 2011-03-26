@@ -390,6 +390,9 @@ class Azan(QtGui.QMainWindow):
             del  settingsDialog.db #avoiding db reomveDatabase warning
             if settingsDialog.isVisible():
                 settingsDialog.close()
+            if reportDialog.isVisible():
+                reportDialog.close()
+                
         except:
             #ensure_quit isn't defined so just hide
 	    self.hide()
@@ -480,8 +483,12 @@ class ReportDialog(QtGui.QDialog):
             if day <> daysofmonth-1:
                 table.insertRows(table.rows(),1)
             day=day+1
-
         self.show()
-
-
  
+    def printReport(self):
+        document = self.editReport.document
+        printer = QtGui.QPrinter()  
+        printDialog = QtGui.QPrintDialog(printer, self)
+        if printDialog.exec_():
+            print "Printing"
+            self.editReport.print_(printer)
