@@ -26,7 +26,7 @@
    <string>Azan Settings</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../images.qrc">
+   <iconset>
     <normaloff>:/images/images/configure.png</normaloff>:/images/images/configure.png</iconset>
   </property>
   <property name="layoutDirection">
@@ -288,7 +288,7 @@ background-image: url(:/images/images/back.jpeg);
                 <item>
                  <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>دائرة العرض</string>
+                   <string>خط العرض</string>
                   </property>
                  </widget>
                 </item>
@@ -440,7 +440,7 @@ background-image: url(:/images/images/back.jpeg);
         </property>
         <attribute name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/images/images/preferences-desktop-sound.png</normaloff>:/images/images/preferences-desktop-sound.png</iconset>
+          <normaloff>:/images/images/preferences-system.png</normaloff>:/images/images/preferences-system.png</iconset>
         </attribute>
         <attribute name="title">
          <string>إعدادات التذكير</string>
@@ -495,8 +495,14 @@ background-image: url(:/images/images/back.jpeg);
              </property>
              <property name="minimumSize">
               <size>
-               <width>94</width>
-               <height>0</height>
+               <width>32</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
               </size>
              </property>
              <property name="cursor">
@@ -530,8 +536,14 @@ background-image: url(:/images/images/back.jpeg);
              </property>
              <property name="minimumSize">
               <size>
-               <width>94</width>
-               <height>0</height>
+               <width>40</width>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>40</width>
+               <height>40</height>
               </size>
              </property>
              <property name="cursor">
@@ -738,7 +750,7 @@ background-image: url(:/images/images/back.jpeg);
        <widget class="QWidget" name="tab">
         <attribute name="icon">
          <iconset resource="../images.qrc">
-          <normaloff>:/images/images/appearance.png</normaloff>:/images/images/appearance.png</iconset>
+          <normaloff>:/images/images/applications-graphics.png</normaloff>:/images/images/applications-graphics.png</iconset>
         </attribute>
         <attribute name="title">
          <string>المظهر</string>

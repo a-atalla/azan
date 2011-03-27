@@ -442,6 +442,7 @@ class ReportDialog(QtGui.QDialog):
         boldFormat.setFontWeight(QtGui.QFont.Bold)
         
         #Report Header
+        #self.editReport.setHtml('<p dir="rtl">')
         cursor.insertText(u"بسم الله الرحمن الرحيم", boldFormat);
         cursor.insertBlock()
         cursor.insertText(u"( إِنَّ الصَّلاَةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا) ")

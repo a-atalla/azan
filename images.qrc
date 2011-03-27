@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="images">
+    <file>images/applications-graphics.png</file>
+    <file>images/preferences-system.png</file>
+    <file>images/media-playback-start.png</file>
+    <file>images/media-playback-pause.png</file>
     <file>images/back.png</file>
     <file>images/kaba.png</file>
     <file>images/kubbetussahra_128x128x32.png</file>
