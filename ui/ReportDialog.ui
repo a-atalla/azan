@@ -27,11 +27,7 @@
    <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="Line" name="line">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-      </widget>
+      <widget class="QSpinBox" name="spinBox"/>
      </item>
      <item>
       <widget class="QComboBox" name="comboGMonths">
@@ -52,6 +48,16 @@
         <bool>true</bool>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QSpinBox" name="spinBox_2"/>
      </item>
      <item>
       <widget class="QComboBox" name="comboHMonths">

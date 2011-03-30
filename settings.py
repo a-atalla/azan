@@ -242,7 +242,6 @@ class SettingsDialog(QtGui.QDialog):
         settings.setValue('style', self.cboxStyle.currentText())
         
         self.calculate()
-        
    
     def  calculate(self):
         year= int(QtCore.QDateTime.currentDateTime().toString("yyyy"))

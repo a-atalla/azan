@@ -49,7 +49,10 @@ class MapWidget(QtGui.QWidget):
             #Or use ORM ie..elixir
             self.query.exec_("SELECT max(countryNO) FROM countriesTable")
             while self.query.next(): self.countryNO = self.query.value(0).toInt()[0] + 1
-            self.query.exec_("INSERT into countriesTable values(%i, '%s')") % (self.countryNO,  self.country)
+            self.query.prepare("INSERT into countriesTable values(?, ?)")
+            self.query.addBindValue(self.countryNO)
+            self.query.addBindValue(self.country)
+            self.query.exec_()
         else:
             self.query.exec_("SELECT cityNO FROM citiesTable where cityName = '" + self.city + "'")
             while self.query.next():

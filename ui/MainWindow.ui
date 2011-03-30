@@ -328,7 +328,7 @@
              <locale language="Arabic" country="Egypt"/>
             </property>
             <property name="text">
-             <string>Next Prayer</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -348,7 +348,7 @@
           <item>
            <widget class="QLabel" name="lblPrevPrayer">
             <property name="text">
-             <string>Prev Prayer</string>
+             <string/>
             </property>
             <property name="textFormat">
              <enum>Qt::AutoText</enum>

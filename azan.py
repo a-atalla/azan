@@ -7,6 +7,7 @@ from settings import *
 from azkar import *
 from prayertime import to_hrtime
 from Hijra.HijriCal import *
+from time import sleep
 
 class Azan(QtGui.QMainWindow):
     def __init__(self):
@@ -57,6 +58,7 @@ class Azan(QtGui.QMainWindow):
     def refreshWindow(self):
         settingsDialog.calculate()
         self.load_qibla()
+        QtCore.QTimer.singleShot(1, self.animate_qibla)
         self.lblCurrentCity.setText(settingsDialog.city)
         self.lblCurrentCountry.setText(settingsDialog.country)
         self.txtFajr.setText(settingsDialog.FajrTime)
@@ -328,15 +330,27 @@ class Azan(QtGui.QMainWindow):
         self.close()
     
     def svg_rotation_to_cardinal(self,degree):
-      #top: north
-      return degree-90
+        #top: north
+        return degree-90
     
-    def load_qibla(self):
-        direction = settingsDialog.qibla_direction()
-        if direction < 0 : direction += 360
+    def load_qibla(self, angle = None):
+        if angle == None:
+            direction = settingsDialog.qibla_direction()
+        else:
+            direction = angle
+        
         simple_qibla_xml = self.qibla_svg(self.svg_rotation_to_cardinal(direction))
         qibla = QtCore.QByteArray(simple_qibla_xml)
         self.svgwidget.load(qibla)
+    
+    def animate_qibla(self):
+        qibla = settingsDialog.qibla_direction()
+        if qibla < 0 : qibla += 360
+        for angle in range(0, int(qibla)):
+            QtGui.QApplication.processEvents()
+            sleep(0.00)
+            self.load_qibla(angle)
+        self.load_qibla(qibla)
         
     def secs_to_hrtime(self, secs):
         return to_hrtime(secs/3600)[:-3]
@@ -442,7 +456,6 @@ class ReportDialog(QtGui.QDialog):
         boldFormat.setFontWeight(QtGui.QFont.Bold)
         
         #Report Header
-        #self.editReport.setHtml('<p dir="rtl">')
         cursor.insertText(u"بسم الله الرحمن الرحيم", boldFormat);
         cursor.insertBlock()
         cursor.insertText(u"( إِنَّ الصَّلاَةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا) ")
